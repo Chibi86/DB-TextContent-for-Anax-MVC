@@ -18,22 +18,21 @@ Use of external libraries
 The following external modules are excluded byt will be needed for run this classes.
 
 ### Anax-MVC
-* Github: !(https://github.com/mosbth/Anax-MVC)
+* Github: https://github.com/mosbth/Anax-MVC
 * Version: v2.0.x or later
 * License: MIT license
 * Setup: Get this one first
 
 ### Mos/CDatabase
-* Github: !(https://github.com/mosbth/cdatabase/)
+* Github: https://github.com/mosbth/cdatabase/
 * Version: v0.1.1*
 * License: MIT license
-* Setup: Get this one second or third, then you will need follow !(https://dbwebb.se/kunskap/skapa-basklasser-for-databasdrivna-modeller-i-anax-mvc)[this swedish instructions] to build base class for database modells i Anax-MVC (sorry).
+* Setup: After installing you will need follow [this swedish instructions](https://dbwebb.se/kunskap/skapa-basklasser-for-databasdrivna-modeller-i-anax-mvc) (sorry) to build a base class for database modells in Anax-MVC.
 
 ### Mos/CForm V2
-* Github: !(https://github.com/mosbth/cform/tree/v2)
+* Github: https://github.com/mosbth/cform/tree/v2
 * Version: v1.9.8
 * License: MIT license
-* Setup: Get this one second or third
 
 Install instructions
 --------------------
@@ -68,7 +67,7 @@ $di->set('PageController', function() use ($di) {
 
 ### 4. Controllers has a url-prefix variable that probly you need to change from example-page if not using that one.
 
-### 5. Go to '/content/setup' to setup database TextContent tables to database. 
+### 5. Go to `/content/setup` to setup database TextContent tables to database. 
 
 
 History
