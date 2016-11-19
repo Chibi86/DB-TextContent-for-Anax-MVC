@@ -1,0 +1,25 @@
+{
+    "name": "Chp/TextContent",    
+    "type": "library",
+    "description": "Database content to Anax-MVC",
+    "keywords": ["blog", "page", "database", "anax-mvc", "education"],
+    "homepage": "http://chibideisgn.se",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rasmus Berg",
+            "email": "rasmus.berg@chibidesign.se",
+            "homepage": "http://chibidesign.se",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "mos/ctextfilter": "1.1.0",
+        "mos/database": "0.1.1*",
+        "mos/cform": "2.x-dev"
+    },
+    "autoload": {
+        "psr-4": { "Chp\\": "src/" }
+    }
+}

@@ -1,0 +1,126 @@
+/**
+ * Content list
+ */
+.content-list{
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+  
+  .content-list th{
+    text-align: left;
+    border-bottom: 2px solid #cccccc;
+    line-height: 20px;
+  }
+  
+  .content-list td{ padding: 0 20px 0 0; }
+    
+    .content-list td a.fa { text-decoration: none; }
+
+/**
+ * Blog-posts
+ */
+.blog-post header {
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 21px;
+}
+  
+  .blog-post header h2 {
+    margin-bottom: 0;
+    font-weight: 600;
+  }
+    
+    .blog-post header h2 a { text-decoration: none; }
+  
+  .blog-post section { margin-bottom: 22px; }
+  
+    .blog-post section.ingress { font-style: italic; }
+  
+  .blog-post .tags {
+    padding: 0;
+    margin: 0;
+    list-style: outside none none;
+    overflow: hidden;
+  }
+    
+    .blog-post .tags li { float: left; }
+      
+      .blog-post .tags li .tag {
+        background: #cccccc;
+        -webkit-border-radius: 3px 0 0 3px;
+        -moz-border-radius: 3px 0 0 3px;
+        border-radius: 3px 0 0 3px;
+        display: inline-block;
+        height: 26px;
+        line-height: 26px;
+        margin: 9px 10px 9px 0;
+        padding: 0 20px 0 23px;
+        position: relative;
+        text-decoration: none;
+        transition: color 0.2s ease 0s;
+      }
+        
+        .blog-post .tags li .tag:before{
+          background: #ffffff;
+          -webkit-border-radius: 10px;
+          -moz-border-radius: 10px;
+          border-radius: 10px;
+          box-shadow: 0 1px hsla(0, 0%, 0%, 0.25) inset;
+          content: "";
+          height: 6px;
+          left: 10px;
+          position: absolute;
+          top: 10px;
+          width: 6px;
+        }
+        
+        .blog-post .tags li .tag:after{
+          background: #ffffff;
+          border-bottom: 13px solid transparent;
+          border-left: 10px solid #cccccc;
+          border-top: 13px solid transparent;
+          content: "";
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+
+footer.bloglinks{
+  padding-top: 22px;
+}
+
+/**
+ * Content page
+ */
+.page-content section{ margin-bottom: 22px; }
+  
+  .page-content section.ingress{
+    line-height: 22px;
+    font-size: 18px;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+.page-footer{
+  margin: 11px 0;
+  padding: 10px 5px;
+  border: 1px solid #cccccc;
+  background-color: #f6f6f6;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+
+/**
+ * Admin, moderator or user action that needs to be confirm (and sometimes verification)
+ */
+.confirm-action {
+  padding: 21px;
+  text-align: center;
+  border: 1px solid #cccccc;
+}
+  .confirm-action fieldset {
+    padding: 0;
+    margin: 0;
+    border: none;
+  }
