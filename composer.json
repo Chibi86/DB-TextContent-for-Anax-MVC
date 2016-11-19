@@ -1,5 +1,5 @@
 {
-    "name": "Chp/TextContent",    
+    "name": "chp/textcontent",    
     "type": "library",
     "description": "Database content to Anax-MVC",
     "keywords": ["blog", "page", "database", "anax-mvc", "education"],
