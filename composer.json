@@ -16,7 +16,7 @@
     "require": {
         "php": ">=5.4",
         "mos/ctextfilter": "1.1.0",
-        "mos/database": "0.1.1*",
+        "mos/database": "0.1.1",
         "mos/cform": "2.x-dev"
     },
     "autoload": {
