@@ -42,7 +42,7 @@ Install instructions
 ### 2. The easiest way to install this is using composer. Add this to your composer.json: 
 
 ```javascript
-    "dahc/flashmessages": "dev-master"
+    "chp/textcontent": "dev-master"
 ```
 
 ### 3. Include to your frontcontroller this controllers
