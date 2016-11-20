@@ -19,7 +19,7 @@ $app->navbar->configure(ANAX_APP_PATH . 'config/navbar.php');
 // Include database support
 $di->setShared('db', function() {
     $db = new \Mos\Database\CDatabaseBasic();
-    $db->setOptions(require ANAX_APP_PATH . 'config/database_mysql.php');
+    $db->setOptions(require "config_sqlite.php");
     $db->connect();
     return $db;
 });

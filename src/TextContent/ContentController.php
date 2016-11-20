@@ -47,20 +47,15 @@ class ContentController implements \Anax\DI\IInjectionAware
    */
   public function setupAction(){
     
-    $this->db->checkIfTableExist('content')->execute();
-    $exist = $this->db->fetchOne();
-    
-    $toDo   = ($exist) ? "Restore" : "Setup";
+    $toDo   = "Restore or setup";
     $toWhat = "content database tables";
     $title  = "{$toDo} {$toWhat}";
     $url    = $this->url->create($this->urlPrefix . '');
     
-    if($exist){
-      $form = $this->confirmForm($this->url->create($this->urlPrefix . 'content/'));
-      $status = $form->check();
-    }
+    $form = $this->confirmForm($this->url->create($this->urlPrefix . 'content/'));
+    $status = $form->check();
     
-    if(!$exist || $status === true){
+    if($status === true){
     
       $this->db->dropTableIfExists('content')->execute();
 
@@ -303,7 +298,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     $this->views->add('text-content/action', [
       'title'  => $title,
       'toDo'    => strtolower($action),
-      'toWhat'  => $this->getTypeTitle($content->type),
+      'toWhat'  => strtolower($this->getTypeTitle($content->type)),
       'which'   => htmlentities($content->title),
       'form'    => $form->getHTML(['novalidate' => true]),
     ], 'main');

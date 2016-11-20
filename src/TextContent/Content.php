@@ -5,7 +5,7 @@ namespace Chp\TextContent;
  * Model for text content
  * Made by Rasmus Berg (c) 2014-2016
  */
-Class Content extends \Anax\MVC\CDatabaseModel
+Class Content extends \Mos\MVC\CDatabaseModel
 {
 	
 	/**

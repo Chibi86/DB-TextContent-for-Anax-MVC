@@ -17,21 +17,24 @@ Use of external libraries
 
 The following external modules are excluded byt will be needed for run this classes.
 
-### Anax-MVC
+### Anax-MVC (Get this one first)
 * Github: https://github.com/mosbth/Anax-MVC
 * Version: v2.0.x or later
 * License: MIT license
-* Setup: Get this one first
 
 ### Mos/CDatabase
 * Github: https://github.com/mosbth/cdatabase/
 * Version: v0.1.1*
 * License: MIT license
-* Setup: After installing you will need follow [this swedish instructions](https://dbwebb.se/kunskap/skapa-basklasser-for-databasdrivna-modeller-i-anax-mvc) (sorry) to build a base class for database modells in Anax-MVC.
 
 ### Mos/CForm V2
 * Github: https://github.com/mosbth/cform/tree/v2
 * Version: v1.9.8
+* License: MIT license
+
+### Anax/CDatabaseModel (Only if you not got your own)
+* Github: https://github.com/chibi86/CDatabaseModel
+* Version: v1.0.0
 * License: MIT license
 
 Install instructions
@@ -45,7 +48,11 @@ Install instructions
     "chp/textcontent": "dev-master"
 ```
 
-### 3. Include to your frontcontroller this controllers
+### 3. Move `vendor\chp\textcontent\app\view` to `app\view` and `vendor\chp\textcontent\webroot` to `webroot`
+
+### 4a. OWN FRONTCONTROLLER
+
+Include this to your frontcontroller this controllers 
 
 ```php
 $di->set('ContentController', function() use ($di) {
@@ -65,15 +72,30 @@ $di->set('PageController', function() use ($di) {
 });
 ```
 
-### 4. Controllers has a url-prefix variable that probly you need to change from example-page if not using that one.
+Don`t forget to config database settings for CDatabase in your frontcontroller etc.
 
-### 5. Go to `/content/setup` to setup database TextContent tables to database. 
+### 4b. MINE FRONTCONTROLLER (content.php)
+
+Set chmod 777 on `webroot/db` if you want to use sqlite, otherwish config mysql for CDatabase in frontcontroller etc.
+
+### 5. Controllers has a url-prefix variable that probly you need to change if you use your own frontcontroller or .htaccess to redirect
+
+### 6. Go to `[your-url]/[frontcontroller]/content/setup` to setup database TextContent tables to database. 
 
 
 History
 -----------------------------------
 
 ###History for Database TextContent for ANAX-MVC 
+
+v1.0.1 (2016-11-20)
+
+* Add sqlite prepare
+* Add more to install instructions and correct somethings
+* Add link to CDatabaseModel, no need more follow swedish guide...
+* Remove prepare in frontcontroller for mysql-config file
+* Bugfix: That made TextContent not work at all
+* Bugfix: That made setup/restore fail
 
 v1.0.0 (2016-11-19)
 
