@@ -2,8 +2,8 @@
     "name": "chp/textcontent",    
     "type": "library",
     "description": "Database content to Anax-MVC",
-    "keywords": ["blog", "page", "database", "anax-mvc", "education"],
-    "homepage": "http://chibideisgn.se",
+    "keywords": ["blog", "page", "content", "database", "anax-mvc", "education"],
+    "homepage": "http://chibidesign.se",
     "license": "MIT",
     "authors": [
         {
