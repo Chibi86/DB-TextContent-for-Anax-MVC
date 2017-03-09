@@ -88,6 +88,11 @@ History
 
 ###History for Database TextContent for ANAX-MVC 
 
+v1.1.1 (2017-03-09)
+
+* Change: Travis-settings
+* Add files for Travis
+
 v1.1.0 (2017-03-09)
 
 * Added phpunit testcases
