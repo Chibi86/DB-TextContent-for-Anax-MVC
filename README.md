@@ -34,7 +34,7 @@ The following external modules are excluded byt will be needed for run this clas
 
 ### Anax/CDatabaseModel (Only if you not got your own)
 * Github: https://github.com/chibi86/CDatabaseModel
-* Version: v1.0.0
+* Version: v1.0.1
 * License: MIT license
 
 Install instructions
@@ -87,6 +87,13 @@ History
 -----------------------------------
 
 ###History for Database TextContent for ANAX-MVC 
+
+v1.1.0 (2017-03-09)
+
+* Added phpunit testcases
+* Added so functions has fallbacks if inputed values is not valid
+* Bugfix: Fix so sqlite working
+* Bugfix: Fix filter validate
 
 v1.0.1 (2016-11-20)
 

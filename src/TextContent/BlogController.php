@@ -3,7 +3,7 @@ namespace Chp\TextContent;
 
 /**
  * A blog controller
- * Made by Rasmus Berg (c) 2014-2016
+ * Made by Rasmus Berg (c) 2014-2017
  */
 class BlogController implements \Anax\DI\IInjectionAware
 {

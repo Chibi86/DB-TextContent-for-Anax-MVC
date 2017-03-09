@@ -3,9 +3,9 @@ namespace Chp\TextContent;
 
 /**
  * Model for text content
- * Made by Rasmus Berg (c) 2014-2016
+ * Made by Rasmus Berg (c) 2014-2017
  */
-Class Content extends \Mos\MVC\CDatabaseModel
+Class Content extends \Anax\MVC\CDatabaseModel
 {
 	
 	/**
@@ -20,10 +20,10 @@ Class Content extends \Mos\MVC\CDatabaseModel
     $now    = date('Y-m-d H:i:s');
     $params = array();
     
-    $this->db->select("c.*");
-    $this->db->from("content AS c");
-    //$this->db->join("user AS u", "c.author = u.id");
-    $this->db->where("c.`deleted` IS NULL");
+    $this->db->select("c.*")
+             ->from("content AS c")
+    //       ->join("user AS u", "c.author = u.id")
+             ->where("c.`deleted` IS NULL");
     
     if($publish){
       $this->db->andWhere("c.published <= ?");
@@ -61,11 +61,11 @@ Class Content extends \Mos\MVC\CDatabaseModel
     $now    = date('Y-m-d H:i:s');
     $params = array($type);
              
-    $this->db->select("c.*");
-    $this->db->from("content AS c");
-    //$this->db->join("user AS u", "c.author = u.id");
-    $this->db->where("c.`type` = ?");
-    $this->db->andWhere("c.`deleted` IS NULL");
+    $this->db->select("c.*")
+             ->from("content AS c")
+    //       ->join("user AS u", "c.author = u.id")
+             ->where("c.`type` = ?")
+             ->andWhere("c.`deleted` IS NULL");
     
     if($publish){
       $this->db->andWhere("c.published <= ?");
@@ -103,13 +103,13 @@ Class Content extends \Mos\MVC\CDatabaseModel
 		$now    = date('Y-m-d H:i:s');
     $params = array($tag, $type);
 		
-    $this->db->select("c.*");
-    $this->db->from("content AS c");
-    //$this->db->join("user AS u", "c.author = u.id");
-    $this->db->join("content_tags AS t", "t.idContent = c.id");
-    $this->db->where("t.slug = ?");
-    $this->db->andWhere("c.`type` = ?");
-    $this->db->andWhere("c.`deleted` IS NULL");
+    $this->db->select("c.*")
+             ->from("content AS c")
+    //       ->join("user AS u", "c.author = u.id")
+             ->join("content_tags AS t", "t.idContent = c.id")
+             ->where("t.slug = ?")
+             ->andWhere("c.`type` = ?")
+             ->andWhere("c.`deleted` IS NULL");
     
     if($publish){
       $this->db->andWhere("c.published <= ?");
@@ -145,21 +145,21 @@ Class Content extends \Mos\MVC\CDatabaseModel
 		$now    = date('Y-m-d H:i:s');
     $params = [$url, $type];
     
-    $this->db->select("c.*");
-    $this->db->from("content AS c");
-    //$this->db->join("user AS u", "c.author = u.id");
-    $this->db->where("c.url = ?");
-    $this->db->andWhere("c.`type` = ?");
-    $this->db->andWhere("c.`deleted` IS NULL");
+    $this->db->select("c.*")
+             ->from("content AS c")
+    //       ->join("user AS u", "c.author = u.id")
+             ->where("c.url = ?")
+             ->andWhere("c.`type` = ?")
+             ->andWhere("c.`deleted` IS NULL");
     
     if($publish){
       $this->db->andWhere("c.published <= ?");
       $params[] = $now;
     }
     
-    $this->db->orderBy('c.published DESC, c.created DESC');
-    $this->db->limit(1);
-    $this->db->execute($params);
+    $this->db->orderBy('c.published DESC, c.created DESC')
+             ->limit(1)
+             ->execute($params);
     
     $this->db->setFetchModeClass(__CLASS__);
     return $this->db->fetchOne();
@@ -176,22 +176,21 @@ Class Content extends \Mos\MVC\CDatabaseModel
 	public function getContentBySlug($slug, $type, $publish = true){
     $now = date('Y-m-d H:i:s');
     $params = array($slug, $type);
-    
-    $this->db->select("c.*");
-    $this->db->from("content AS c");
-    //$this->db->join("user AS u", "c.author = u.id");
-    $this->db->where("c.slug = ?");
-    $this->db->andWhere("c.`type` = ?");
-    $this->db->andWhere("c.`deleted` IS NULL");
+    $this->db->select("c.*")
+             ->from("content AS c")
+    //       ->join("user AS u", "c.author = u.id")
+             ->where("c.slug = ?")
+             ->andWhere("c.`type` = ?")
+             ->andWhere("c.`deleted` IS NULL");
              
     if($publish){
       $this->db->andWhere("c.published <= ?");
       $params[] = $now;
     }
     
-    $this->db->orderBy('c.published DESC, c.created DESC');
-    $this->db->limit(1);
-    $this->db->execute($params);
+    $this->db->orderBy('c.published DESC, c.created DESC')
+             ->limit(1)
+             ->execute($params);
     
     $this->db->setFetchModeClass(__CLASS__);
     return $this->db->fetchOne();
@@ -208,12 +207,12 @@ Class Content extends \Mos\MVC\CDatabaseModel
     $now    = date('Y-m-d H:i:s');
     $params = array($id);
     
-    $this->db->select("c.*, group_concat(t.tag separator ', ') AS tags");
-    $this->db->from("content AS c");
-    //$this->db->join("user AS u", "c.author = u.id");
-    $this->db->join("content_tags AS t", "t.idContent = c.id");
-    $this->db->where("c.id = ?");
-    $this->db->andWhere("c.`deleted` IS NULL");
+    $this->db->select("c.*, group_concat(t.tag, ', ') AS tags")
+             ->from("content AS c")
+    //       ->join("user AS u", "c.author = u.id")
+             ->join("content_tags AS t", "t.idContent = c.id")
+             ->where("c.id = ?")
+             ->andWhere("c.`deleted` IS NULL");
     
     if($publish){
       $this->db->andWhere("c.published <= ?");
@@ -226,6 +225,12 @@ Class Content extends \Mos\MVC\CDatabaseModel
     return $this->db->fetchOne();
 	}
 	
+	/*****
+	 ***
+	 ** GET - Counting prepare for Paging (exemple on pagecontrollers blog.php, page.php, report.php and list_content.php)
+	 ***
+	 *****/
+   
 	/**
 	 * Count all content from database
 	 *
@@ -236,9 +241,9 @@ Class Content extends \Mos\MVC\CDatabaseModel
     $now    = date('Y-m-d H:i:s');
     $params = [];
     
-    $this->db->select("COUNT(id) AS countAll");
-    $this->db->from("Content");
-    $this->db->where("`deleted` IS NULL");
+    $this->db->select("COUNT(id) AS countAll")
+             ->from("Content")
+             ->where("`deleted` IS NULL");
     
     if($publish){
       $this->db->andWhere("published <= ?");
@@ -261,12 +266,12 @@ Class Content extends \Mos\MVC\CDatabaseModel
 	 */
 	public function countAllContentOfType($type, $publish = true){
     $now    = date('Y-m-d H:i:s');
-    $params = [$types];
+    $params = [$type];
     
-    $this->db->select("COUNT(id) AS countAll");
-    $this->db->from("Content");
-    $this->db->where("`type` = ?");
-    $this->db->andWhere("`deleted` IS NULL");
+    $this->db->select("COUNT(id) AS countAll")
+             ->from("Content")
+             ->where("`type` = ?")
+             ->andWhere("`deleted` IS NULL");
     
     if($publish){
       $this->db->andWhere("published <= ?");
@@ -292,12 +297,12 @@ Class Content extends \Mos\MVC\CDatabaseModel
     $now    = date('Y-m-d H:i:s');
     $params = [$tag, $type];
     
-    $this->db->select("COUNT(c.id) AS countAll");
-    $this->db->from("content AS c");
-    $this->db->join("content_tags AS t", "t.idContent = c.id");
-    $this->db->where("t.slug = ?");
-    $this->db->andWhere("c.`type` = ?");
-    $this->db->andWhere("c.`deleted` IS NULL");
+    $this->db->select("COUNT(c.id) AS countAll")
+             ->from("content AS c")
+             ->join("content_tags AS t", "t.idContent = c.id")
+             ->where("t.slug = ?")
+             ->andWhere("c.`type` = ?")
+             ->andWhere("c.`deleted` IS NULL");
     
     if($publish){
       $this->db->andWhere("c.published <= ?");
@@ -308,9 +313,16 @@ Class Content extends \Mos\MVC\CDatabaseModel
     
     $this->db->setFetchModeClass(__CLASS__);
     $count = $this->db->fetchOne();
+    
     return $count->countAll;		
 	}
 	
+	/*****
+	 ***
+	 ** GET - Help functions (exemple on pagecontrollers blog.php, page.php, report.php and list_content.php)
+	 ***
+	 *****/
+   
 	/**
 	 * Get tags for a content
 	 *
@@ -341,7 +353,11 @@ Class Content extends \Mos\MVC\CDatabaseModel
     
     $this->db->setFetchModeClass(__CLASS__);
     $tag = $this->db->fetchOne();
-    return 	$tag->tag;
+    
+    if(isset($tag->tag))
+      return 	$tag->tag;
+    
+    return null;
 	}
   
   /**

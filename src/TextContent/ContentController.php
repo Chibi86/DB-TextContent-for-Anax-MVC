@@ -3,7 +3,7 @@ namespace Chp\TextContent;
 
 /**
  * Text content controller
- *
+ * Made by Rasmus Berg (c) 2014-2017
  */
 class ContentController implements \Anax\DI\IInjectionAware
 {
@@ -46,15 +46,13 @@ class ContentController implements \Anax\DI\IInjectionAware
    * @Return    Void
    */
   public function setupAction(){
-    
     $toDo   = "Restore or setup";
     $toWhat = "content database tables";
     $title  = "{$toDo} {$toWhat}";
     $url    = $this->url->create($this->urlPrefix . '');
-    
     $form = $this->confirmForm($this->url->create($this->urlPrefix . 'content/'));
     $status = $form->check();
-    
+ 
     if($status === true){
     
       $this->db->dropTableIfExists('content')->execute();
@@ -217,7 +215,6 @@ class ContentController implements \Anax\DI\IInjectionAware
     $status = $form->check();
     
     $this->theme->setTitle($title);
-    
     $this->views->add('text-content/post', 
       [
         'title'  => $title,
@@ -243,7 +240,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     
     $content = $this->content->getContentById($id, false);
     
-    if(!$content){
+    if(is_null($content->id)){
       $this->response->redirect($url);
     }
     
@@ -278,7 +275,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     
     $content = $this->content->find($id);
     
-    if(!$content){
+    if(is_null($content->id)){
       $this->response->redirect($url);
     }
     
@@ -582,9 +579,13 @@ class ContentController implements \Anax\DI\IInjectionAware
 	 * @Return 	String    	   	 	  With url for content
 	 */
 	public function getUrlToContent($content) {
-	  $type = $this->types[$content->type]; // Get type from type index
+    if(isset($this->types[$content->type])){
+      $type = $this->types[$content->type]; // Get type from type index
 	  
-	  return $this->url->create($this->urlPrefix . "{$type['url']}{$type['perfix']}{$content->{$type['field']}}");
+      return $this->url->create($this->urlPrefix . "{$type['url']}{$type['perfix']}{$content->{$type['field']}}");
+    }
+    
+    return null;
 	}
 	
   /**
@@ -672,7 +673,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     return ($this->slugify($url) == $url);
   }
   
-  	/**
+  /**
 	 * Check so the select filters exist.
 	 *
 	 * @Param     Array 	  $filters  Array with select filters
@@ -680,13 +681,12 @@ class ContentController implements \Anax\DI\IInjectionAware
 	 */
 	public function checkFilter($filter){
 	  if(isset($filter)){
-      // Get all valid filters.
-      $valid = $this->filters;
-      
       // For each filter, check if the filter exist
-      if(!isset($valid[$filter])){
-        return false;
+      foreach($this->filters as $val){
+        if($val == $filter)
+          return true;
       }
+      return false;
     }
 	  return true;
 	}
