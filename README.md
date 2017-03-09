@@ -91,7 +91,7 @@ History
 v1.1.0 (2017-03-09)
 
 * Added phpunit testcases
-* Added so functions has fallbacks if inputed values is not valid
+* Bugfix: Added fallbacks if inputed values is not valid, for some functions
 * Bugfix: Fix so sqlite working
 * Bugfix: Fix filter validate
 
