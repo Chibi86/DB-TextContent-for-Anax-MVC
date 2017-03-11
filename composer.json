@@ -17,7 +17,8 @@
         "php": ">=5.4",
         "mos/ctextfilter": "1.1.0",
         "mos/cdatabase": "0.1.1",
-        "mos/cform": "2.x-dev"
+        "mos/cform": "2.x-dev",
+        "anax/mvc": "2.0.6"
     },
     "autoload": {
         "psr-4": { "Chp\\": "src/" }

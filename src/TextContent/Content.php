@@ -7,7 +7,6 @@ namespace Chp\TextContent;
  */
 Class Content extends \Anax\MVC\CDatabaseModel
 {
-	
 	/**
 	 * Get "all" content from database (limit by per page)
 	 *
@@ -408,4 +407,3 @@ Class Content extends \Anax\MVC\CDatabaseModel
     return $offset;
   }
 }
-?>

@@ -8,7 +8,7 @@ namespace Chp\TextContent;
 class ContentController implements \Anax\DI\IInjectionAware
 {
   use \Anax\DI\TInjectable;
-	
+  
   /**
 	 * Properties
 	 */
@@ -22,11 +22,11 @@ class ContentController implements \Anax\DI\IInjectionAware
   private $urlPrefix = "content.php/";
   
   /**
-   * Initialize the controller
+   * Construct the controller
    *
    * @Return    Void
    */
-  public function initialize(){
+  public function ___construct(){
     $this->content = new \Chp\TextContent\Content();
     $this->content->setDI($this->di);
   }
@@ -49,8 +49,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     $toDo   = "Restore or setup";
     $toWhat = "content database tables";
     $title  = "{$toDo} {$toWhat}";
-    $url    = $this->url->create($this->urlPrefix . '');
-    $form = $this->confirmForm($this->url->create($this->urlPrefix . 'content/'));
+    $form   = $this->confirmForm($this->url->create($this->urlPrefix . 'content/'));
     $status = $form->check();
  
     if($status === true){
@@ -168,9 +167,9 @@ class ContentController implements \Anax\DI\IInjectionAware
     $published = boolval($published);
 
     $form   = $this->listForm($type, $published);
-    $status = $form->check();
+    $form->check();
     
-    if($type){
+    if(!is_null($type)){
       $contents = $this->content->getAllContentOfType($type, $page, $this->limitListPerPage, $published);
     }
     else{
@@ -212,7 +211,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     $title = "{$action} content";
     
     $form = $this->contentForm($action);
-    $status = $form->check();
+    $form->check();
     
     $this->theme->setTitle($title);
     $this->views->add('text-content/post', 
@@ -234,15 +233,13 @@ class ContentController implements \Anax\DI\IInjectionAware
     $title  = "{$action} content";
     $url    = $this->url->create($this->urlPrefix . 'content/');
     
-    if(!$id || !is_numeric($id)){
+    if(is_null($id) || !is_numeric($id))
       $this->response->redirect($url);
-    }
     
     $content = $this->content->getContentById($id, false);
     
-    if(is_null($content->id)){
+    if(is_null($content->id))
       $this->response->redirect($url);
-    }
     
     $form = $this->contentForm(strtolower($action), $content);
     $status = $form->check();
@@ -269,7 +266,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     $title = "Delete content";
     $url = $this->url->create($this->urlPrefix . "content/");
     
-    if(!$id || !is_numeric($id)){
+    if(is_null($id) || !is_numeric($id)){
 			$this->response->redirect($url);
 		}
     
@@ -348,8 +345,10 @@ class ContentController implements \Anax\DI\IInjectionAware
    * @Return  Object    $form       CForm object
    */
   private function contentForm($action, $values = null){
-    if(isset($values) && is_object($values))
-      extract(get_object_vars($values));
+    if(isset($values) && is_object($values)){
+      $valArr = get_object_vars($values);
+      extract($valArr);
+    }
     
     $slug = (isset($slug)) ? $slug : NULL;
     
@@ -545,14 +544,14 @@ class ContentController implements \Anax\DI\IInjectionAware
         'submit' => [
           'type'     => 'submit',
           'value'    => 'Yes',
-          'callback' => function($form) {
+          'callback' => function() {
             return true;
           }
         ],
         'submit-no' => [
           'type'     => "submit",
           'value'    => 'No',
-          'callback' => function($form) use($returnUrl) {
+          'callback' => function() use($returnUrl) {
             $this->response->redirect($returnUrl);
           }
         ]
@@ -595,6 +594,8 @@ class ContentController implements \Anax\DI\IInjectionAware
 	 * @Return		Array		$types	Array with the types title and keys
 	 */
 	public function getTypes(){
+    $type = array();
+    
 		// Loop through and save types key as key and title as value in a new array
 		foreach($this->types AS $key => $value){
 			$types[$key] = $value['title'];
@@ -692,4 +693,3 @@ class ContentController implements \Anax\DI\IInjectionAware
 	  return true;
 	}
 }
-?>

@@ -38,15 +38,13 @@ class PageController implements \Anax\DI\IInjectionAware
    * @Return  Void
    */
   public function pageAction($url = null){
-    if(!$url){
+    if(is_null($url))
       throw new \Anax\Exception\NotFoundException();
-    }
     
     $page = $this->content->getContentByUrl($url, 'page');
     
-    if(!$page){
+    if(empty($page))
       throw new \Anax\Exception\NotFoundException();
-    }
     
     $page->title         = htmlentities($page->title, null, 'UTF-8');
     $page->ingress       = htmlentities($page->ingress, null, 'UTF-8');
@@ -67,4 +65,3 @@ class PageController implements \Anax\DI\IInjectionAware
     );
   }
 }
-?>

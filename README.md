@@ -88,23 +88,19 @@ History
 
 ###History for Database TextContent for ANAX-MVC 
 
-v1.1.4 (2017-03-11)
-
-* Added autoloader.php for travis
-
-v1.1.3 (2017-03-11)
-
-* Added test\config.php for travis
-* Update: Readme
-
-v1.1.2 (2017-03-11)
+v1.1.1 to 1.1.6 (2017-03-11)
 
 * Added .phpunit.xml for config phpunit
-
-v1.1.1 (2017-03-09)
-
-* Change: Travis-settings
-* Add files for Travis
+* Added files for Travis
+* Update: Travis-settings
+* Update: Remove short php open tags
+* Update: Remove php end tags, where it's not needed
+* Update: Remove unused code
+* Update: Comment-fixes in ContentController.php
+* Bugfix: Try to fix Travis phpunit test
+* Bugfix: Fix right namespaces on class calls in test-classes
+* Bugfix: Fix so null values is not accepted in class functions
+* And more fixes...
 
 v1.1.0 (2017-03-09)
 

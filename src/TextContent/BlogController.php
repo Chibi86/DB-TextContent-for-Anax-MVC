@@ -40,17 +40,19 @@ class BlogController implements \Anax\DI\IInjectionAware
    */
   public function tagAction($tag = null, $page = null){
     
-    if($tag){
+    $tag_title = null;
+    
+    if(!is_null($tag)){
       $posts = $this->content->getAllContentOfTag($tag, 'blog-post', $page, $this->postsPerPage);
     }
     else{
       $posts = $this->content->getAllContentOfType('blog-post', $page, $this->postsPerPage);
     }
     
-    if(!$posts && $tag){
+    if(count($posts) == 0 && !is_null($tag)){
       $this->response->redirect($this->url->create($this->urlPrefix . 'blog/'));
     }
-    else if($posts){
+    else if(count($posts) > 0){
       foreach($posts AS $key => $post){
         $posts[$key]->title         = htmlentities($post->title, null, 'UTF-8');
         $posts[$key]->ingress       = htmlentities($post->ingress, null, 'UTF-8');
@@ -80,7 +82,7 @@ class BlogController implements \Anax\DI\IInjectionAware
       [
         'title'     => $title,
         'posts' 	  => $posts,
-        'tag'       => (isset($tag_title)) ? $tag_title : NULL
+        'tag'       => $tag_title
       ]
     );
   }
@@ -93,13 +95,13 @@ class BlogController implements \Anax\DI\IInjectionAware
    */
   public function readAction($slug = null){
     
-    if(!$slug){
+    if(is_null($slug)){
       $this->response->redirect($this->url->create($this->urlPrefix . 'blog/'));
     }
     
     $post = $this->content->getContentBySlug($slug, 'blog-post');
     
-    if(!$post){
+    if(empty($post)){
       $this->response->redirect($this->url->create($this->urlPrefix . 'blog/'));
     }
     

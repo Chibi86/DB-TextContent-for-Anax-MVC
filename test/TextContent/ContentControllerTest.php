@@ -1,5 +1,5 @@
 <?php
-namespace Anax\TextContent;
+namespace Chp\TextContent;
 /**
  * A test class
  *
@@ -27,7 +27,7 @@ class ContentControllerTest extends \PHPUnit_Framework_TestCase
 	 */
 	private function initializeApp()
 	{
-		$this->app->ContentController = new \Anax\TextContent\ContentController();
+		$this->app->ContentController = new \Chp\TextContent\ContentController();
 		$this->app->ContentController->setDI($this->di);
 	}
   

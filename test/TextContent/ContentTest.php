@@ -1,5 +1,5 @@
 <?php
-namespace Anax\TextContent;
+namespace Chp\TextContent;
 /**
  * A test class
  *
@@ -18,7 +18,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
 		$this->di = new \Anax\DI\CDIFactoryDefault();
 		$this->app = new \Anax\MVC\CApplicationBasic($this->di);
 		$this->di->setShared('db', function() {
-			$db = new \Anax\Database\CDatabaseBasic();
+			$db = new \Mos\Database\CDatabaseBasic();
 			$db->setOptions(['dsn' => "sqlite::memory:", "verbose" => false, 'table_prefix' => ""]);
 			$db->connect();
       
@@ -35,7 +35,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
 	 */
 	private function initializeApp()
 	{
-		$this->app->Content = new \Anax\TextContent\Content();
+		$this->app->Content = new \Chp\TextContent\Content();
 		$this->app->Content->setDI($this->di);
 	}
   
