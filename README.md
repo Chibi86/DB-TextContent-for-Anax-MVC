@@ -88,6 +88,10 @@ History
 
 ###History for Database TextContent for ANAX-MVC 
 
+v1.1.4 (2017-03-11)
+
+* Added autoloader.php for travis
+
 v1.1.3 (2017-03-11)
 
 * Added test\config.php for travis
