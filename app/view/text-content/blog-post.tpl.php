@@ -8,7 +8,7 @@
 <?php if(isset($post->updated)) : ?>
       (<time datetime="<?=$post->updated;?>" title="Updated"><?=$post->updated;?></time>)
 <?php endif; ?>
-      <!--• <strong>Author:</strong> <a href="<?//=$post->authorUrl;?>"><?//=$post->authorName;?></a>-->
+      <!--• <strong>Author:</strong> <a href="<--?=$post->authorUrl;?>"><--?=$post->authorName;?></a>-->
     </header>		
 		<section class="ingress"><?=$post->ingress;?></section>
     <section class="bodytext">

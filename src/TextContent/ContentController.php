@@ -26,7 +26,7 @@ class ContentController implements \Anax\DI\IInjectionAware
    *
    * @Return    Void
    */
-  public function ___construct(){
+  public function initialize(){
     $this->content = new \Chp\TextContent\Content();
     $this->content->setDI($this->di);
   }
