@@ -306,6 +306,7 @@ class ContentController implements \Anax\DI\IInjectionAware
    *
    * @Param   Object    $values     Content values to add form elements
    * @Reurn   Object    $form       This form object
+   * @param string $type
    */
   private function listForm($type = null, $published = false){
     
@@ -536,6 +537,7 @@ class ContentController implements \Anax\DI\IInjectionAware
    *
    * @Param   String   $returnUrl       Return url
    * @Return  Object   $form            Form-object
+   * @return \Mos\HTMLForm\CForm
    */
   public function confirmForm($returnUrl = null){
     $returnUrl = (isset($returnUrl)) ? $returnUrl : $this->request->getBaseUrl();
@@ -607,6 +609,7 @@ class ContentController implements \Anax\DI\IInjectionAware
 	 *
 	 * @params  string $type  Type key
 	 * @returns string        Type title
+	 * @return string
 	 */
 	public function getTypeTitle($type){
 		return $this->types[$type]['title'];
