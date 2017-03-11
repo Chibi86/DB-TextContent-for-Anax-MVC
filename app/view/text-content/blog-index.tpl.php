@@ -1,29 +1,29 @@
 <h1><?=$title;?></h1>
 
-<? if($tag): ?>
+<?php if($tag): ?>
 <p>All blog posts tagged with: <span class="tag"><?=$tag;?></span></p>
-<? endif; ?>
+<?php endif; ?>
 
-<? foreach($posts as $post): ?>
+<?php foreach($posts as $post): ?>
 <article class="blog-post">
 		<header>
       <h2><a href="<?=$post->showUrl;?>"><?=$post->title;?></a></h2>
       <strong>Published:</strong>
       <time datetime="<?=$post->published;?>"><?=$post->published;?></time>
-  <? if(isset($post->updated)) : ?>
+  <?php if(isset($post->updated)) : ?>
       (<time datetime="<?=$post->updated;?>" title="Updated"><?=$post->updated;?></time>)
-  <? endif; ?>
+  <?php endif; ?>
       <!--<strong>Author:</strong> <a href="<?//=$post->authorUrl;?>"><?//=$post->authorName;?></a>-->
     </header>		
 		<section class="ingress"><?=$post->ingress;?></section>
     <p><a href="<?=$post->showUrl;?>">Read more..</a></p>
     <ul class="tags">
-  <? if(isset($post->tags)): ?>
-    <? foreach($post->tags as $tag): ?>
+  <?php if(isset($post->tags)): ?>
+    <?php foreach($post->tags as $tag): ?>
       <li><a href="<?=$tag->url;?>" class="tag"><?=$tag->tag;?></a></li>
-    <? endforeach; ?>
-  <? endif; ?>
+    <?php endforeach; ?>
+  <?php endif; ?>
 		</ul>
 </article>
-<? endforeach; ?>
+<?php endforeach; ?>
     

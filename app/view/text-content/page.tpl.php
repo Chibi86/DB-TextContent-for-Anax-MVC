@@ -11,8 +11,8 @@
 <footer class="page-footer">
   <strong>Published:</strong> <time datetime="<?=$page->published;?>"><?=$page->published;?></time>
   <!--| by <a href="<?//=$page->authorUrl;?>"><?//=$page->authorName;?></a>-->
-<? if($page->updated): ?>
+<?php if($page->updated): ?>
   | Last updated: <time datetime="<?=$page->updated;?>"><?=$page->updated;?></time>
-<? endif; ?>
+<?php endif; ?>
   <a href="<?=$page->editUrl;?>">Edit page</a>
 </footer>

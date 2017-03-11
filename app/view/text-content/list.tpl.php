@@ -13,7 +13,7 @@
     <th>Published</th>
     <th>Actions</th>
   </tr>
-<? foreach($contents AS $content) : ?>
+<?php foreach($contents AS $content) : ?>
   <tr>
     <td><?=$content->typeTxt;?></td>
     <td>
@@ -30,7 +30,7 @@
       <a href="<?=$content->removeUrl;?>" title="Delete content">Delete</a>
     </td>
 	</tr>
-<? endforeach; ?>
+<?php endforeach; ?>
 </table>
 <p></p>
 <p>

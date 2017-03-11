@@ -160,7 +160,7 @@ class ContentController implements \Anax\DI\IInjectionAware
    *
 	 * @Param     String    $type	  Type to list
    * @Param     Integer   $page   Page that paging is on
-	 * @Returns		Void
+	 * @Return		Void
 	 */
 	public function listAction($type = null, $published = false, $page = null){
     $type      = ($this->checkType($type)) ? $type : null;
@@ -262,7 +262,7 @@ class ContentController implements \Anax\DI\IInjectionAware
 	 * Remove content
 	 *
    * @Param   Integer  $id      Index to content to remove
-	 * @Returns String   $error  	Database-error msg
+	 * @Return  String   $error  	Database-error msg
 	 */
 	public function removeAction($id = null){
 		$action = "Delete";
@@ -304,9 +304,9 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare form to add or edit content
    *
-   * @Param   Object    $values     Content values to add form elements
-   * @Reurn   Object    $form       This form object
-   * @param string $type
+   * @Param   String    $type       Selected content-type
+   * @Param   Boolean   $published  If content should be published already
+   * @Return  Object    $form       CForm object
    */
   private function listForm($type = null, $published = false){
     
@@ -345,7 +345,7 @@ class ContentController implements \Anax\DI\IInjectionAware
    *
    * @Param   String    $action     What to do (add or edit)
    * @Param   Object    $values     Content values to add form elements
-   * @Reurn   Object    $form       This form object
+   * @Return  Object    $form       CForm object
    */
   private function contentForm($action, $values = null){
     if(isset($values) && is_object($values))
@@ -537,7 +537,6 @@ class ContentController implements \Anax\DI\IInjectionAware
    *
    * @Param   String   $returnUrl       Return url
    * @Return  Object   $form            Form-object
-   * @return \Mos\HTMLForm\CForm
    */
   public function confirmForm($returnUrl = null){
     $returnUrl = (isset($returnUrl)) ? $returnUrl : $this->request->getBaseUrl();
@@ -593,7 +592,7 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
 	 * Return array with all content types title and keys (Use for content-type select) 
 	 *
-	 * @Returns		Array		$types	Array with the types title and keys
+	 * @Return		Array		$types	Array with the types title and keys
 	 */
 	public function getTypes(){
 		// Loop through and save types key as key and title as value in a new array
@@ -607,9 +606,8 @@ class ContentController implements \Anax\DI\IInjectionAware
 	/**
 	 * Return name of one specific type
 	 *
-	 * @params  string $type  Type key
-	 * @returns string        Type title
-	 * @return string
+	 * @Params  String $type  Type key
+	 * @Return  String        Type title
 	 */
 	public function getTypeTitle($type){
 		return $this->types[$type]['title'];
@@ -618,8 +616,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
 	 * Create a slug of a string, to be used as url.
 	 *
-	 * @param string $str the string to format as slug.
-	 * @returns str the formatted slug. 
+	 * @Param   String   $str  String to format as slug.
+	 * @Return  String   $str  Formatted slug. 
 	 */
 	public function slugify($str) {
 	  $str = mb_strtolower(trim($str));

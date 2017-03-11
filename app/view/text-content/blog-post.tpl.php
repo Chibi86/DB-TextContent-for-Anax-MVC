@@ -5,9 +5,9 @@
       <h2><?=$post->title;?></h2>
       <strong>Published:</strong>
       <time datetime="<?=$post->published;?>"><?=$post->published;?></time>
-<? if(isset($post->updated)) : ?>
+<?php if(isset($post->updated)) : ?>
       (<time datetime="<?=$post->updated;?>" title="Updated"><?=$post->updated;?></time>)
-<? endif; ?>
+<?php endif; ?>
       <!--• <strong>Author:</strong> <a href="<?//=$post->authorUrl;?>"><?//=$post->authorName;?></a>-->
     </header>		
 		<section class="ingress"><?=$post->ingress;?></section>
@@ -16,9 +16,9 @@
 		</section>
     <section class="tag-section">
       <ul class="tags">
-  <? foreach($post->tags as $tag) : ?>
+  <?php foreach($post->tags as $tag) : ?>
         <li><a href="<?=$tag->url;?>" class="tag"><?=$tag->tag;?></a></li>
-  <? endforeach; ?>
+  <?php endforeach; ?>
       </ul>
     </section>
     <section class="permalink">

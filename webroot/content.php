@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This is a Chipla frontcontroller.
  *
