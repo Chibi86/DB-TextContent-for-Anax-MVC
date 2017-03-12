@@ -4,13 +4,25 @@ namespace Chp\TextContent;
 /**
  * A blog controller
  * Made by Rasmus Berg (c) 2014-2017
+ *
+ * @Property  Object  $this->di         Anax-MVC class handler
+ * @Property  Object  $this->response   Anax-MVC Php Header class
+ * @Property  Object  $this->url        Anax-MVC url-handler class
+ * @Property  Object  $this->theme      Anax-MVC theme-handler class
+ * @Property  Object  $this->views      Anax-MVC views-handler class
+ * @Property  Object  $this->textFilter Anax-MVC textformat-handler class
  */
 class BlogController implements \Anax\DI\IInjectionAware
 {
   use \Anax\DI\TInjectable;
 	
+  /**
+	 * Properties
+	 */
+  private $content = null;
   private $postsPerPage = null;
   private $urlPrefix = "content.php/";
+  private $content = null;
   
   /**
    * Initialize the controller
@@ -42,12 +54,10 @@ class BlogController implements \Anax\DI\IInjectionAware
     
     $tag_title = null;
     
-    if(!is_null($tag)){
+    if(!is_null($tag))
       $posts = $this->content->getAllContentOfTag($tag, 'blog-post', $page, $this->postsPerPage);
-    }
-    else{
+    else
       $posts = $this->content->getAllContentOfType('blog-post', $page, $this->postsPerPage);
-    }
     
     if(count($posts) == 0 && !is_null($tag)){
       $this->response->redirect($this->url->create($this->urlPrefix . 'blog/'));

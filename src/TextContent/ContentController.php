@@ -4,6 +4,15 @@ namespace Chp\TextContent;
 /**
  * Text content controller
  * Made by Rasmus Berg (c) 2014-2017
+ *
+ * @Property  Object  $this->di         Anax-MVC class handler
+ * @Property  Object  $this->request    Anax-MVC $_POST, $_GET and $_SERVER handler class
+ * @Property  Object  $this->response   Anax-MVC Php Header class
+ * @Property  Object  $this->url        Anax-MVC url-handler class
+ * @Property  Object  $this->theme      Anax-MVC theme-handler class
+ * @Property  Object  $this->views      Anax-MVC views-handler class
+ * @Property  Object  $this->textFilter Anax-MVC textformat-handler class
+ * @Property  Object  $this->db         PDO database class
  */
 class ContentController implements \Anax\DI\IInjectionAware
 {
@@ -12,6 +21,7 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
 	 * Properties
 	 */
+  private $content = null;
   private $limitListPerPage = null;       // Limit contents on list page
   private $minimumLength    = 3;          // Minimum length on text-fields (ex. ingress, title etc)
   private $types 		        = [		        // Content types
@@ -242,7 +252,7 @@ class ContentController implements \Anax\DI\IInjectionAware
       $this->response->redirect($url);
     
     $form = $this->contentForm(strtolower($action), $content);
-    $status = $form->check();
+    $form->check();
     
     $this->theme->setTitle($title);
     
@@ -594,7 +604,7 @@ class ContentController implements \Anax\DI\IInjectionAware
 	 * @Return		Array		$types	Array with the types title and keys
 	 */
 	public function getTypes(){
-    $type = array();
+    $types = array();
     
 		// Loop through and save types key as key and title as value in a new array
 		foreach($this->types AS $key => $value){

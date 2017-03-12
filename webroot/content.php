@@ -59,4 +59,3 @@ $app->router->handle();
 
 // Render the page
 $app->theme->render();
-?>

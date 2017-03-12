@@ -10,7 +10,7 @@
 </article>
 <footer class="page-footer">
   <strong>Published:</strong> <time datetime="<?=$page->published;?>"><?=$page->published;?></time>
-  <!--| by <a href="<?//=$page->authorUrl;?>"><?//=$page->authorName;?></a>-->
+  <!--| by <a href="<--?=$page->authorUrl;?>"><--?=$page->authorName;?></a>-->
 <?php if($page->updated): ?>
   | Last updated: <time datetime="<?=$page->updated;?>"><?=$page->updated;?></time>
 <?php endif; ?>

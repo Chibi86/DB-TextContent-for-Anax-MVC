@@ -88,33 +88,42 @@ History
 
 ###History for Database TextContent for ANAX-MVC 
 
-v1.1.1 to 1.1.6 (2017-03-11)
+v1.2.0 (2017-03-12)
 
-* Added .phpunit.xml for config phpunit
-* Added files for Travis
+* Added: @Property  annotations in comments before classes
+* Removed: Short php open tags
+* Removed: Php end tags, where it's not needed
+
+v1.1.1 to 1.1.7 (2017-03-11 - 2017-03-12)
+
+* Added: .phpunit.xml for config phpunit
+* Added: Files for Travis
+* Added: CDatabaseModel to require in composer for Travis
+* Added: Anax-MVC to be require in composer for Travis
 * Update: Travis-settings
 * Update: Remove short php open tags
 * Update: Remove php end tags, where it's not needed
 * Update: Remove unused code
 * Update: Comment-fixes in ContentController.php
-* Bugfix: Try to fix Travis phpunit test
+* Update: Add autoload for vendor in test/config.php
+* Bugfix: Fix Travis phpunit test
 * Bugfix: Fix right namespaces on class calls in test-classes
 * Bugfix: Fix so null values is not accepted in class functions
 * And more fixes...
 
 v1.1.0 (2017-03-09)
 
-* Added phpunit testcases
+* Added: Phpunit testcases
 * Bugfix: Added fallbacks if inputed values is not valid, for some functions
 * Bugfix: Fix so sqlite working
 * Bugfix: Fix filter validate
 
 v1.0.1 (2016-11-20)
 
-* Add sqlite prepare
-* Add more to install instructions and correct somethings
-* Add link to CDatabaseModel, no need more follow swedish guide...
-* Remove prepare in frontcontroller for mysql-config file
+* Added: Sqlite prepare
+* Added: More to install instructions and correct somethings
+* Added: Link to CDatabaseModel, no need more follow swedish guide...
+* Removed: Prepare in frontcontroller for mysql-config file
 * Bugfix: That made TextContent not work at all
 * Bugfix: That made setup/restore fail
 
