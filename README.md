@@ -1,6 +1,10 @@
 DB TextContent for ANAX-MVC
 ===========================
 
+[![Build Status](https://scrutinizer-ci.com/g/Chibi86/DB-TextContent-for-Anax-MVC/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Chibi86/DB-TextContent-for-Anax-MVC/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Chibi86/DB-TextContent-for-Anax-MVC/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Chibi86/DB-TextContent-for-Anax-MVC/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/Chibi86/DB-TextContent-for-Anax-MVC/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Chibi86/DB-TextContent-for-Anax-MVC/?branch=master)
+
 This controller and modell classes adds possibly to add database administrat content to your Anax-MVC platform, like pages or blog posts.
 
 By Rasmus Berg, rasmus.berg@chibidesign.se
