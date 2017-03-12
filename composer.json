@@ -19,6 +19,7 @@
         "mos/cdatabase": "0.1.1",
         "mos/cform": "2.x-dev",
         "anax/mvc": "2.0.4"
+        "chp/cdatabasemodel": "dev-master"
     },
     "autoload": {
         "psr-4": { "Chp\\": "src/" }
