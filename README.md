@@ -95,6 +95,7 @@ History
 v1.2.0 (2017-03-12)
 
 * Added: @Property  annotations in comments before classes
+* Added: Badges
 * Removed: Short php open tags
 * Removed: Php end tags, where it's not needed
 
