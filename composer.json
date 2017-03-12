@@ -18,7 +18,7 @@
         "mos/ctextfilter": "1.1.0",
         "mos/cdatabase": "0.1.1",
         "mos/cform": "2.x-dev",
-        "anax/mvc": "2.0.5"
+        "anax/mvc": "2.0.4"
     },
     "autoload": {
         "psr-4": { "Chp\\": "src/" }
