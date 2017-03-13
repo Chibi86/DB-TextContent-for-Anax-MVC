@@ -22,7 +22,6 @@ class BlogController implements \Anax\DI\IInjectionAware
   private $content = null;
   private $postsPerPage = null;
   private $urlPrefix = "content.php/";
-  private $content = null;
   
   /**
    * Initialize the controller

@@ -16,6 +16,9 @@ class PageController implements \Anax\DI\IInjectionAware
 {
   use \Anax\DI\TInjectable;
   
+  /**
+	 * Properties
+	 */
   private $content = null;
   private $urlPrefix = "content.php/";
   
