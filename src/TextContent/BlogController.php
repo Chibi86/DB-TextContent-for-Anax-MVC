@@ -6,6 +6,7 @@ namespace Chp\TextContent;
  * Made by Rasmus Berg (c) 2014-2017
  *
  * @Property  Object  $this->di         Anax-MVC class handler
+ * @Property  Object  $this->content    Anax-MVC text content class
  * @Property  Object  $this->response   Anax-MVC Php Header class
  * @Property  Object  $this->url        Anax-MVC url-handler class
  * @Property  Object  $this->theme      Anax-MVC theme-handler class
