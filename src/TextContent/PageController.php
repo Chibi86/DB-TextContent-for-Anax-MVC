@@ -6,7 +6,6 @@ namespace Chp\TextContent;
  * Made by Rasmus Berg (c) 2014-2017
  *
  * @Property  Object  $this->di         Anax-MVC class handler
- * @Property  Object  $this->content    Anax-MVC text content class
  * @Property  Object  $this->request    Anax-MVC $_POST, $_GET and $_SERVER handler class
  * @Property  Object  $this->url        Anax-MVC url-handler class
  * @Property  Object  $this->theme      Anax-MVC theme-handler class
@@ -17,6 +16,7 @@ class PageController implements \Anax\DI\IInjectionAware
 {
   use \Anax\DI\TInjectable;
   
+  private $content = null;
   private $urlPrefix = "content.php/";
   
   /**
