@@ -211,7 +211,7 @@ Class Content extends \Anax\MVC\CDatabaseModel
     $this->db->select("c.*, group_concat(t.tag, ', ') AS tags")
              ->from("content AS c")
     //       ->join("user AS u", "c.author = u.id")
-             ->join("content_tags AS t", "t.idContent = c.id")
+             ->leftJoin("content_tags AS t", "t.idContent = c.id")
              ->where("c.id = ?")
              ->andWhere("c.`deleted` IS NULL");
     
@@ -221,7 +221,6 @@ Class Content extends \Anax\MVC\CDatabaseModel
     }
     
     $this->db->execute($params);
-    
     $this->db->setFetchModeClass(__CLASS__);
     return $this->db->fetchOne();
 	}

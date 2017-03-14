@@ -92,6 +92,14 @@ History
 
 ###History for Database TextContent for ANAX-MVC 
 
+v1.2.5 (2017-03-14)
+
+* Added: More testcases, and testcases for Blog and Page controllers
+* Change: Clean up classes with smaller functions
+* Bugfix: Remove content now works
+* Bugfix: Content with no tags, can now edits
+* And more...
+
 v1.2.0 (2017-03-12)
 
 * Added: @Property  annotations in comments before classes

@@ -38,8 +38,18 @@ class BlogController implements \Anax\DI\IInjectionAware
    *
    * @Return   Void
    */
-  public function indexAction(){
-    $this->tagAction();
+  public function indexAction($page = null){
+    $posts = $this->getBlogContent($page);
+    
+    if(count($posts) > 0){
+      foreach($posts AS $key => $post){
+        // Prepare blog post for show in view
+        $posts[$key] = $this->preparePost($post);
+      }
+    }
+    
+    // Show blog posts in view
+    $this->postsToView($posts, null);
   }
   
   /**
@@ -49,51 +59,18 @@ class BlogController implements \Anax\DI\IInjectionAware
    * @Param   Integer   $page   Page on paging
    * @Return  Void
    */
-  public function tagAction($tag = null, $page = null){
+  public function tagAction($tag = null, $page = null){    
+    $posts = $this->getBlogContent($page, $tag);
     
-    $tag_title = null;
-    
-    if(!is_null($tag))
-      $posts = $this->content->getAllContentOfTag($tag, 'blog-post', $page, $this->postsPerPage);
-    else
-      $posts = $this->content->getAllContentOfType('blog-post', $page, $this->postsPerPage);
-    
-    if(count($posts) == 0 && !is_null($tag)){
+    if(count($posts) == 0 && !is_null($tag))
       $this->response->redirect($this->url->create($this->urlPrefix . 'blog/'));
-    }
-    else if(count($posts) > 0){
-      foreach($posts AS $key => $post){
-        $posts[$key]->title         = htmlentities($post->title, null, 'UTF-8');
-        $posts[$key]->ingress       = htmlentities($post->ingress, null, 'UTF-8');
-        $posts[$key]->showUrl       = $this->url->create($this->urlPrefix . "blog/read/" . $post->slug);
-        //$posts[$key]->authorName    = htmlentities($post->name, null, 'UTF-8');
-        //$posts[$key]->authorUrl     = $this->url->create($this->urlPrefix . 'users/id/' . $post->author);
-        
-        $tags = $this->content->getTagsForContent($post->id);
-        
-        foreach($tags AS $item_key => $item){
-          $tags[$item_key]->tag  = htmlentities($item->tag, null, 'UTF-8');
-          $tags[$item_key]->url  = $this->url->create($this->urlPrefix . "blog/tag/{$item->slug}");
-          
-          if($tag == $item->slug && !isset($tag_title)){
-            $tag_title = $item->tag;
-          }
-        }
-        
-        $posts[$key]->tags = $tags;
-      }
+
+    foreach($posts AS $key => $post){
+      // Prepare blog post for show in view
+      $posts[$key] = $this->preparePost($post, $tag);
     }
     
-    $title = "Blog" . (($tag) ? " - tag: {$tag_title}" : NULL);
-    
-    $this->theme->setTitle($title);
-    $this->views->add('text-content/blog-index', 
-      [
-        'title'     => $title,
-        'posts' 	  => $posts,
-        'tag'       => $tag_title
-      ]
-    );
+    $this->postsToView($posts, $tag);
   }
   
   /**
@@ -114,22 +91,8 @@ class BlogController implements \Anax\DI\IInjectionAware
       $this->response->redirect($this->url->create($this->urlPrefix . 'blog/'));
     }
     
-    $post->title         = htmlentities($post->title, null, 'UTF-8');
-    $post->ingress       = htmlentities($post->ingress, null, 'UTF-8');
-    $post->text          = $this->textFilter->doFilter(htmlentities($post->text, null, 'UTF-8'), $post->filters);
-    $post->editUrl       = $this->url->create($this->urlPrefix . "content/edit/{$post->id}"); 
-    $post->showUrl       = $this->url->create($this->urlPrefix . "blog/read/" . $post->slug);
-    //$post->authorName    = htmlentities($post->name, null, 'UTF-8');
-    //$post->authorUrl     = $this->url->create($this->urlPrefix . 'users/id/' . $post->author);
-    
-    $tags = $this->content->getTagsForContent($post->id);
-    
-    foreach($tags AS $tag_key => $tag){
-      $tags[$tag_key]->tag = htmlentities($tag->tag, null, 'UTF-8');
-      $tags[$tag_key]->url  = $this->url->create($this->urlPrefix . "blog/tag/{$tag->slug}");
-    }
-    
-    $post->tags = $tags;
+    // Prepare blog post for show in view
+    $post = $this->preparePost($post);
     
     $title = "Blog -  {$post->title}";
     
@@ -147,5 +110,84 @@ class BlogController implements \Anax\DI\IInjectionAware
       'action'     => 'view',
       'params'	   =>	["blog/read/{$post->slug}"]
     ]);*/
+  }
+  
+  /**
+   * Get blog posts by tag or type
+   *
+   * @Param   Int     $page    Page asked for
+   * @Param   String  $tag     Tag-slug to search for
+   * @Return  Array   $posts   A array with post objects
+   */
+  public function getBlogContent($page = null, $tag = null){
+    if(!is_null($tag))
+      return $this->content->getAllContentOfTag($tag, 'blog-post', $page, $this->postsPerPage);
+    else
+      return $this->content->getAllContentOfType('blog-post', $page, $this->postsPerPage);
+  }
+  
+  /**
+   * Prepare blog post to show in view 
+   *
+   * @Param   Array   $post   Blog post object
+   * @Return  Object  $result Prepared blog post object
+   */
+  public function preparePost($post = null){    
+    $result = null;
+    
+    if(!is_null($post)){
+      $result = (object)[];
+      
+      foreach($post as $key => $value){
+        $result->{$key} = $value;
+      }
+      
+      $result->title        = htmlspecialchars($post->title, ENT_QUOTES);
+      $result->ingress      = htmlspecialchars($post->ingress, ENT_QUOTES);
+      $result->text         = $this->textFilter->doFilter(htmlspecialchars($post->text, ENT_QUOTES), $post->filters);
+      $result->editUrl      = $this->url->create("content/edit/{$post->id}");
+      $result->showUrl      = $this->url->create("blog/read/" . $post->slug);
+      //$result->authorId     = $post->author;
+      //$result->authorName   = htmlspecialchars($post->name, ENT_QUOTES);
+      //$result->authorUrl    = $this->url->create('users/id/' . $post->author);
+      
+      //unset($result->author);
+      
+      $tags = $this->content->getTagsForContent($post->id);
+      
+      foreach($tags AS $item_key => $item){
+        $tags[$item_key]->tag  = htmlspecialchars($item->tag, ENT_QUOTES);
+        $tags[$item_key]->url  = $this->url->create($this->urlPrefix . "blog/tag/{$item->slug}");
+      }
+      
+      $result->tags = $tags;
+    }
+
+    return $result;
+  }
+  
+  /**
+   * Show blog posts in view
+   *
+   * @Param   Array   $posts   Array of blog post objects
+   * @Param   String  $tag     Tag-slug which has give this result
+   * @Return  Void
+   */
+  private function postsToView($posts = array(), $tag = null){
+    $tag_title = null;
+    
+    if(!is_null($tag))
+      $tag_title = $this->content->getTagBySlug($tag);
+    
+    $title = "Blog" . ((!is_null($tag_title)) ? " - tag: {$tag_title}" : NULL);
+  
+    $this->theme->setTitle($title);
+    $this->views->add('text-content/blog-index', 
+      [
+        'title'     => $title,
+        'posts' 	  => $posts,
+        'tag'       => $tag_title
+      ]
+    );
   }
 }

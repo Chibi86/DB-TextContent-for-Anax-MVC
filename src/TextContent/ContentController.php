@@ -32,7 +32,7 @@ class ContentController implements \Anax\DI\IInjectionAware
   private $urlPrefix = "content.php/";
   
   /**
-   * Construct the controller
+   * Initialize the controller
    *
    * @Return    Void
    */
@@ -179,24 +179,11 @@ class ContentController implements \Anax\DI\IInjectionAware
     $form   = $this->listForm($type, $published);
     $form->check();
     
-    if(!is_null($type)){
+    if(!is_null($type))
       $contents = $this->content->getAllContentOfType($type, $page, $this->limitListPerPage, $published);
-    }
-    else{
+    else
       $contents = $this->content->getAllContent($page, $this->limitListPerPage, $published);
-    }
-    
-    foreach($contents AS $key => $content){
-      $available = $this->checkIfAvailable($content->published);
-      
-      $contents[$key]->typeTxt       = $this->getTypeTitle($content->type);
-      $contents[$key]->title         = htmlentities($content->title, null, 'UTF-8');
-      $contents[$key]->editUrl       = $this->url->create($this->urlPrefix . "content/edit/{$content->id}"); 
-      $contents[$key]->removeUrl     = $this->url->create($this->urlPrefix . "content/remove/{$content->id}");
-      $contents[$key]->showUrl       = $this->getUrlToContent($content);
-      $contents[$key]->available     = ((!$available) ? "not-" : null) . "published";
-      $contents[$key]->publishedTxt  = ($available) ? $contents[$key]->published : "Not published yet";
-    }
+    $contents = $this->prepareListContent($contents);
     
     $this->theme->setTitle($title);
     $this->views->add('text-content/list', 
@@ -472,68 +459,7 @@ class ContentController implements \Anax\DI\IInjectionAware
           'value' 		=> 'Save',
           'type'      => 'submit',
           'callback'  => function ($form) use($slug, $action) {
-            $now = date('Y-m-d H:i:s');
-            
-            $newSlug = $this->slugify($form->Value('title'));
-            
-            if($slug != $newSlug && isset($newSlug)){
-              $newSlug = $this->content->makeSlugToContent($newSlug, $form->Value('type'));
-            }
-            
-            $content = array(
-              'title'     => $form->Value('title'),
-              'slug'      => $newSlug,
-              'url'       => $form->Value('url'),
-              'ingress'   => $form->Value('ingress'),
-              'text'      => $form->Value('text'),
-              'type'      => $form->Value('type'),
-              'filters'   => ($form->Value('filters')) ? implode(",", $form->Value('filters')) : '',
-              'published' => ($this->request->getPost('publishedNow') && $this->request->getPost('publishedNow') == 'yes') ? $now : $form->Value('published')
-            );
-            
-            $id = ($form->Value('id')) ? intval($form->Value('id')) : 0;
-            
-            if($id != 0){
-              $content['updated'] = $now;
-              $content['id']      = $id;
-            }
-            else{
-              $content['created'] = $now;
-              $content['author']  = 0;
-            }
-            
-            $this->content->save($content);
-            
-            if(!$this->content->id) {
-              return false;
-            }
-            else if($id != 0){
-              $this->db->delete(
-                'content_tags',
-                'idContent = ?'
-              );
-              $this->db->execute([$this->content->id]);
-              
-              $this->db->insert(
-                'content_tags',
-                ['idContent', 'tag', 'slug']
-              );
-              
-              if($form->Value('tags')){
-                $tags = explode(",", $form->Value('tags'));
-                
-                foreach($tags as $tag){
-                  $tag = trim($tag);
-                  $this->db->execute([
-                    $id,
-                    $tag,
-                    $this->slugify($tag)
-                  ]);
-                }
-              }
-            }
-            
-            $this->response->redirect($this->url->create($this->urlPrefix . "content/"));
+            return $this->saveContent($form, $slug, $action);
           }
         ]
     ]);
@@ -570,6 +496,130 @@ class ContentController implements \Anax\DI\IInjectionAware
 		
     // Check the status of the form
     return $form;
+  }
+  
+  /**
+   * Save content to database
+   *
+   * @Param   Object    $form     Form object
+   * @Param   String    $slug     Old slug for content to compare
+   * @Param   String    $action   Edit or make new content
+   * @Return  Boolean   false     If saving fail, return false
+   */
+  private function saveContent($form, $slug = null, $action){
+    // Prepare content for saving
+    $content = $this->prepareSaveContent($form, $slug, $action);
+    
+    // Save content
+    $content = $this->content->save($content);
+    
+    // Saving fail
+    if(!$this->content->id)
+      return false;
+    // Save tags for content to database
+    else if($content['id'] != 0)
+      $this->saveTags($form->Value('tags'), $this->content->id);
+    
+    $this->response->redirect($this->url->create($this->urlPrefix . "content/"));
+  }
+
+  /**
+   * Save tags for content to database
+   *
+   * @Param   String   $tags     Tags for content
+   * @Param   Int      $id       Content index
+   */
+  private function saveTags($tags, $id){
+    $this->db->delete(
+      'content_tags',
+      'idContent = ?'
+    )->execute([$id]);
+    
+    $this->db->insert(
+      'content_tags',
+      ['idContent', 'tag', 'slug']
+    );
+    
+    if(isset($tags) && !is_null($tags)){
+      $tagsArr = explode(",", $tags);
+      
+      foreach($tagsArr as $tag){
+        $tag = trim($tag);
+        $this->db->execute([
+          $id,
+          $tag,
+          $this->slugify($tag)
+        ]);
+      }
+    }
+  }
+  
+  /**
+   * Prepare contents for show in list view
+   *
+   * @Param   Array   $contents   Array with content objects
+   * @Return  Array   $results    Array with prepare content objects
+   */
+  public function prepareListContent($contents){
+    $results = array();
+    
+    foreach($contents AS $key => $content){
+      $available = $this->checkIfAvailable($content->published);
+      $results[$key] = (object)[];
+      
+      foreach($content as $key2 => $value){
+        $results[$key]->{$key2} = $value;
+      }
+      
+      $results[$key]->typeTxt      = $this->getTypeTitle($content->type);
+      $results[$key]->title        = htmlspecialchars($content->title, ENT_QUOTES);
+      $results[$key]->editUrl      = $this->url->create($this->urlPrefix . "content/edit/{$content->id}");
+      $results[$key]->removeUrl    = $this->url->create($this->urlPrefix . "content/remove/{$content->id}");
+      $results[$key]->showUrl      = $this->getUrlToContent($content);
+      $results[$key]->available    = ((!$available) ? "not-" : null) . "published";
+      $results[$key]->publishedTxt  = ($available) ? $contents[$key]->published : "Not published yet";
+    }
+    
+    return $results;
+  }
+  /**
+   * Prepare save of content to database
+   *
+   * @Param   Object    $form     Form object
+   * @Param   String    $slug     Old slug for content to compare
+   * @Return  Array     $content  Prepare content array
+   */  
+  public function prepareSaveContent($form, $slug = null){
+    $now = date('Y-m-d H:i:s');
+    
+    $newSlug = $this->slugify($form->Value('title'));
+    
+    if($slug != $newSlug && isset($newSlug))
+      $newSlug = $this->content->makeSlugToContent($newSlug, $form->Value('type'));
+    
+    $content = array(
+      'title'     => $form->Value('title'),
+      'slug'      => $newSlug,
+      'url'       => $this->slugify($form->Value('url')),
+      'ingress'   => $form->Value('ingress'),
+      'text'      => $form->Value('text'),
+      'type'      => $form->Value('type'),
+      'filters'   => ($form->Value('filters')) ? implode(",", $form->Value('filters')) : '',
+      'published' => ($form->Value('publishedNow') && $form->Value('publishedNow') == 'yes') ? $now : $form->Value('published')
+    );
+    
+    $id = ($form->Value('id')) ? intval($form->Value('id')) : 0;
+    
+    if($id != 0){
+      $content['updated'] = $now;
+      $content['id']      = $id;
+    }
+    else{
+      $content['created'] = $now;
+      $content['author']  = 0;//$this->user->getUserId();
+    }
+    
+    return $content;
   }
   
   /**
@@ -691,8 +741,8 @@ class ContentController implements \Anax\DI\IInjectionAware
 	 * @Param     Array 	  $filters  Array with select filters
 	 * @Return    Boolean   $result   Return the result of test
 	 */
-	public function checkFilter($filter){
-	  if(isset($filter)){
+	public function checkFilter($filter = null){
+	  if(!empty($filter)){
       // For each filter, check if the filter exist
       foreach($this->filters as $val){
         if($val == $filter)

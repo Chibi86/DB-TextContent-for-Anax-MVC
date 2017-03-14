@@ -57,12 +57,8 @@ class PageController implements \Anax\DI\IInjectionAware
     if(empty($page))
       throw new \Anax\Exception\NotFoundException();
     
-    $page->title         = htmlentities($page->title, null, 'UTF-8');
-    $page->ingress       = htmlentities($page->ingress, null, 'UTF-8');
-    $page->text          = $this->textFilter->doFilter(htmlentities($page->text, null, 'UTF-8'), $page->filters);
-    $page->editUrl       = $this->url->create($this->urlPrefix . "content/edit/{$page->id}"); 
-    //$page->authorName    = htmlentities($page->name, null, 'UTF-8');
-    //$page->authorUrl     = $this->url->create($this->urlPrefix . 'users/id/' . $page->author);
+    // Prepare page for show in view
+    $page = $this->preparePage($page);
     
     $title = $page->title;
     
@@ -74,5 +70,35 @@ class PageController implements \Anax\DI\IInjectionAware
         'page' 	        => $page
       ]
     );
+  }
+  
+  /**
+   * Prepare page to show in view 
+   *
+   * @Param   Object    $page    Page information  
+   * @Return  Object    $result  Prepared page information
+   */
+  public function preparePage($page = null){
+    $result = null;
+    
+    if(!is_null($page)){
+      $result = (object)[];
+      
+      foreach($page as $key => $value){
+        $result->{$key} = $value;
+      }
+      
+      $result->title         = htmlspecialchars($page->title, ENT_QUOTES);
+      $result->ingress       = htmlspecialchars($page->ingress, ENT_QUOTES);
+      $result->text          = $this->textFilter->doFilter(htmlentities($page->text, ENT_QUOTES), $page->filters);
+      $result->editUrl       = $this->url->create("content/edit/{$page->id}");
+      //$result->authorId      = $author;
+      //$result->authorName    = htmlentities($page->name, ENT_QUOTES);
+      //$result->authorUrl     = $this->url->create('users/id/' . $page->author);
+      
+      //unset($author);
+    }
+    
+    return $result;
   }
 }
