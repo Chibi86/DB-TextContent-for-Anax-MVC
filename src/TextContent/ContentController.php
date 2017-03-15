@@ -207,7 +207,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     $action = "Add";
     $title = "{$action} content";
     
-    $form = $this->contentForm($action);
+    $form = $this->contentForm();
     $form->check();
     
     $this->theme->setTitle($title);
@@ -238,7 +238,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     if(is_null($content->id))
       $this->response->redirect($url);
     
-    $form = $this->contentForm(strtolower($action), $content);
+    $form = $this->contentForm($content);
     $form->check();
     
     $this->theme->setTitle($title);
@@ -337,11 +337,10 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare form to add or edit content
    *
-   * @Param   String    $action     What to do (add or edit)
    * @Param   Object    $values     Content values to add form elements
    * @Return  Object    $form       CForm object
    */
-  private function contentForm($action, $values = null){
+  private function contentForm($values = null){
     if(isset($values) && is_object($values)){
       $valArr = get_object_vars($values);
       extract($valArr);
