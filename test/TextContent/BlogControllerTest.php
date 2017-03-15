@@ -171,10 +171,17 @@ class BlogControllerTest extends \PHPUnit_Framework_TestCase
    */
   public function testPreparePost(){
     try{
-      $this->app->BlogController->preparePost();
+      $this->app->BlogController->preparePost(null);
     }
     catch(Exception $e){
       $this->assertTrue(false, "Code fail when try to prepare null! Caught exception: {$e}.");
+    }
+    
+    try{
+      $this->app->BlogController->preparePost((object)[]);
+    }
+    catch(Exception $e){
+      $this->assertTrue(false, "Code fail when try to prepare empty object! Caught exception: {$e}.");
     }
     
     $post = (object)[

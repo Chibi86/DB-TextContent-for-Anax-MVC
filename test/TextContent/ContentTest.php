@@ -236,8 +236,8 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     $result = $app->Content->getContentById(10, false);
     $this->assertTrue(is_null($result->id), "Asking for content of no existing id, find content.");
     
-    $result = $app->Content->getContentById(2, true);
-    $this->assertTrue(is_null($result->id), "Asking for published content with id 2 (not published), find content.");
+   $result = $app->Content->getContentById(3, true);
+    $this->assertTrue(is_null($result->id), "Asking for published content with id 3 (not published), find content.");
     
     $result = $app->Content->getContentById(1, false);
     $this->assertTrue(!is_null($result->id), "Asking for content of id 1 (existing), find no content.");

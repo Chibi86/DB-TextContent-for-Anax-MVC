@@ -5,12 +5,12 @@ namespace Chp\TextContent;
  * A page controller
  * Made by Rasmus Berg (c) 2014-2017
  *
- * @Property  Object  $this->di         Anax-MVC class handler
- * @Property  Object  $this->request    Anax-MVC $_POST, $_GET and $_SERVER handler class
- * @Property  Object  $this->url        Anax-MVC url-handler class
- * @Property  Object  $this->theme      Anax-MVC theme-handler class
- * @Property  Object  $this->views      Anax-MVC views-handler class
- * @Property  Object  $this->textFilter Anax-MVC textformat-handler class
+ * @Property  Object  $di         Anax-MVC class handler
+ * @Property  Object  $request    Anax-MVC $_POST, $_GET and $_SERVER handler class
+ * @Property  Object  $url        Anax-MVC url-handler class
+ * @Property  Object  $theme      Anax-MVC theme-handler class
+ * @Property  Object  $views      Anax-MVC views-handler class
+ * @Property  Object  $textFilter Anax-MVC textformat-handler class
  */
 class PageController implements \Anax\DI\IInjectionAware
 {
@@ -92,11 +92,11 @@ class PageController implements \Anax\DI\IInjectionAware
       $result->ingress       = htmlspecialchars($page->ingress, ENT_QUOTES);
       $result->text          = $this->textFilter->doFilter(htmlentities($page->text, ENT_QUOTES), $page->filters);
       $result->editUrl       = $this->url->create("content/edit/{$page->id}");
-      //$result->authorId      = $author;
+      //$result->authorId      = $page->author;
       //$result->authorName    = htmlentities($page->name, ENT_QUOTES);
       //$result->authorUrl     = $this->url->create('users/id/' . $page->author);
       
-      //unset($author);
+      //unset($result->author);
     }
     
     return $result;

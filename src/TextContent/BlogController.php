@@ -5,12 +5,12 @@ namespace Chp\TextContent;
  * A blog controller
  * Made by Rasmus Berg (c) 2014-2017
  *
- * @Property  Object  $this->di         Anax-MVC class handler
- * @Property  Object  $this->response   Anax-MVC Php Header class
- * @Property  Object  $this->url        Anax-MVC url-handler class
- * @Property  Object  $this->theme      Anax-MVC theme-handler class
- * @Property  Object  $this->views      Anax-MVC views-handler class
- * @Property  Object  $this->textFilter Anax-MVC textformat-handler class
+ * @Property  Object  $di         Anax-MVC class handler
+ * @Property  Object  $response   Anax-MVC Php Header class
+ * @Property  Object  $url        Anax-MVC url-handler class
+ * @Property  Object  $theme      Anax-MVC theme-handler class
+ * @Property  Object  $views      Anax-MVC views-handler class
+ * @Property  Object  $textFilter Anax-MVC textformat-handler class
  */
 class BlogController implements \Anax\DI\IInjectionAware
 {
@@ -67,7 +67,7 @@ class BlogController implements \Anax\DI\IInjectionAware
 
     foreach($posts AS $key => $post){
       // Prepare blog post for show in view
-      $posts[$key] = $this->preparePost($post, $tag);
+      $posts[$key] = $this->preparePost($post);
     }
     
     $this->postsToView($posts, $tag);
@@ -132,10 +132,10 @@ class BlogController implements \Anax\DI\IInjectionAware
    * @Param   Array   $post   Blog post object
    * @Return  Object  $result Prepared blog post object
    */
-  public function preparePost($post = null){    
+  public function preparePost($post){    
     $result = null;
     
-    if(!is_null($post)){
+    if(is_object($post) && property_exists($post, 'title')){
       $result = (object)[];
       
       foreach($post as $key => $value){
@@ -173,7 +173,7 @@ class BlogController implements \Anax\DI\IInjectionAware
    * @Param   String  $tag     Tag-slug which has give this result
    * @Return  Void
    */
-  private function postsToView($posts = array(), $tag = null){
+  private function postsToView($posts, $tag = null){
     $tag_title = null;
     
     if(!is_null($tag))

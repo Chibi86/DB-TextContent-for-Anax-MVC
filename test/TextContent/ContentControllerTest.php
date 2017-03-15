@@ -291,6 +291,18 @@ class ContentControllerTest extends \PHPUnit_Framework_TestCase
 	}
   
   /**
+   * Test-case check date time
+   *
+   */
+  public function testCheckDatetime(){
+    $app = $this->app;
+		
+    $this->assertNotTrue($app->ContentController->checkDatetime('abc'), "Return true on 'abc' is date/time."); 
+    $this->assertTrue($app->ContentController->checkDatetime('1986-08-08 08:08:08'), "Return false on '1986-08-08 08:08:08' is date/time.");
+    $this->assertTrue($app->ContentController->checkDatetime(''), "Return false on empty string, should validate true (Empty is acceptable).");
+  }
+  
+  /**
    * Test-case validate filters so they exist
    *
    */

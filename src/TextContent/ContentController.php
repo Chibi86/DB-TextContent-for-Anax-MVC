@@ -5,14 +5,14 @@ namespace Chp\TextContent;
  * Text content controller
  * Made by Rasmus Berg (c) 2014-2017
  *
- * @Property  Object  $this->di         Anax-MVC class handler
- * @Property  Object  $this->request    Anax-MVC $_POST, $_GET and $_SERVER handler class
- * @Property  Object  $this->response   Anax-MVC Php Header class
- * @Property  Object  $this->url        Anax-MVC url-handler class
- * @Property  Object  $this->theme      Anax-MVC theme-handler class
- * @Property  Object  $this->views      Anax-MVC views-handler class
- * @Property  Object  $this->textFilter Anax-MVC textformat-handler class
- * @Property  Object  $this->db         PDO database class
+ * @Property  Object  $di         Anax-MVC class handler
+ * @Property  Object  $request    Anax-MVC $_POST, $_GET and $_SERVER handler class
+ * @Property  Object  $response   Anax-MVC Php Header class
+ * @Property  Object  $url        Anax-MVC url-handler class
+ * @Property  Object  $theme      Anax-MVC theme-handler class
+ * @Property  Object  $views      Anax-MVC views-handler class
+ * @Property  Object  $textFilter Anax-MVC textformat-handler class
+ * @Property  Object  $db         PDO database class
  */
 class ContentController implements \Anax\DI\IInjectionAware
 {
@@ -508,7 +508,7 @@ class ContentController implements \Anax\DI\IInjectionAware
    */
   private function saveContent($form, $slug = null, $action){
     // Prepare content for saving
-    $content = $this->prepareSaveContent($form, $slug, $action);
+    $content = $this->prepareSaveContent($form, $slug);
     
     // Save content
     $content = $this->content->save($content);
@@ -557,7 +557,7 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare contents for show in list view
    *
-   * @Param   Array   $contents   Array with content objects
+   * @Param   Object  $contents   Object with content objects
    * @Return  Array   $results    Array with prepare content objects
    */
   public function prepareListContent($contents){
@@ -586,16 +586,14 @@ class ContentController implements \Anax\DI\IInjectionAware
    * Prepare save of content to database
    *
    * @Param   Object    $form     Form object
-   * @Param   String    $slug     Old slug for content to compare
+   * @Param   String    $oldSlug  Old slug for content to compare
    * @Return  Array     $content  Prepare content array
    */  
-  public function prepareSaveContent($form, $slug = null){
+  public function prepareSaveContent($form, $oldSlug = null){
     $now = date('Y-m-d H:i:s');
     
-    $newSlug = $this->slugify($form->Value('title'));
-    
-    if($slug != $newSlug && isset($newSlug))
-      $newSlug = $this->content->makeSlugToContent($newSlug, $form->Value('type'));
+    // Prepare new slug
+    $newSlug = $this->prepareNewSlug($form->Value('title'), $form->Value('type'), $oldSlug);
     
     $content = array(
       'title'     => $form->Value('title'),
@@ -620,6 +618,23 @@ class ContentController implements \Anax\DI\IInjectionAware
     }
     
     return $content;
+  }
+  
+  /**
+   * Prepare new slug for content by title
+   *
+   * @Param   String    $title      Content title to make slug by
+   * @Param   String    $type       Content type
+   * @Param   String    $oldSlug    Old slug for content to compare
+   * @Return  String    $newSlug    New unique slug for content
+   */
+  public function prepareNewSlug($title, $type, $oldSlug = null){
+    $newSlug = $this->slugify($title);
+    
+    if($oldSlug != $newSlug && isset($newSlug))
+      $newSlug = $this->content->makeSlugToContent($newSlug, $type);
+    
+    return $newSlug;
   }
   
   /**
@@ -707,7 +722,7 @@ class ContentController implements \Anax\DI\IInjectionAware
    * @Return  Boolean   True/false     Validate status
    */
   public function checkDatetime($datetime){
-    if($datetime){
+    if(isset($datetime) && !empty($datetime)){
       $format = 'Y-m-d H:i:s';
       $d = \DateTime::createFromFormat($format, $datetime);
       return $d && $d->format($format) == $datetime;

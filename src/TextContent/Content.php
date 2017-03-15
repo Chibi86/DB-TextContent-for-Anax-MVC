@@ -5,7 +5,7 @@ namespace Chp\TextContent;
  * Model for text content
  * Made by Rasmus Berg (c) 2014-2017
  *
- * @Property  Object  $this->db         PDO database-handler class
+ * @Property  Object  $db         PDO database-handler class
  */
 Class Content extends \Anax\MVC\CDatabaseModel
 {
