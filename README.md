@@ -148,5 +148,5 @@ v1.0.0 (2016-11-19)
 
 
 ```
-Copyright (c) 2016 Rasmus Berg, rasmus.berg@chibidesign.se
+Copyright (c) 2016-2017 Rasmus Berg, rasmus.berg@chibidesign.se
 ```

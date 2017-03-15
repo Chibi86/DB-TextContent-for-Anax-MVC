@@ -129,7 +129,7 @@ class BlogController implements \Anax\DI\IInjectionAware
   /**
    * Prepare blog post to show in view 
    *
-   * @Param   Array   $post   Blog post object
+   * @Param   Object  $post   Blog post object
    * @Return  Object  $result Prepared blog post object
    */
   public function preparePost($post){    
@@ -169,7 +169,7 @@ class BlogController implements \Anax\DI\IInjectionAware
   /**
    * Show blog posts in view
    *
-   * @Param   Array   $posts   Array of blog post objects
+   * @Param   Object  $posts   Object of blog post objects
    * @Param   String  $tag     Tag-slug which has give this result
    * @Return  Void
    */

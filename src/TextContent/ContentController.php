@@ -458,8 +458,8 @@ class ContentController implements \Anax\DI\IInjectionAware
         'submit' => [
           'value' 		=> 'Save',
           'type'      => 'submit',
-          'callback'  => function ($form) use($slug, $action) {
-            return $this->saveContent($form, $slug, $action);
+          'callback'  => function ($form) use($slug) {
+            return $this->saveContent($form, $slug);
           }
         ]
     ]);
@@ -502,13 +502,12 @@ class ContentController implements \Anax\DI\IInjectionAware
    * Save content to database
    *
    * @Param   Object    $form     Form object
-   * @Param   String    $slug     Old slug for content to compare
-   * @Param   String    $action   Edit or make new content
+   * @Param   String    $oldSlug  Old slug for content to compare
    * @Return  Boolean   false     If saving fail, return false
    */
-  private function saveContent($form, $slug = null, $action){
+  private function saveContent($form, $oldSlug = null){
     // Prepare content for saving
-    $content = $this->prepareSaveContent($form, $slug);
+    $content = $this->prepareSaveContent($form, $oldSlug);
     
     // Save content
     $content = $this->content->save($content);
