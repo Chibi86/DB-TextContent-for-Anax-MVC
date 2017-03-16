@@ -90,7 +90,7 @@ class ValidContent implements \Anax\DI\IInjectionAware
 	public function slugify($str) {
 	  $str = mb_strtolower(trim($str));
 		
-		$str = str_replace(array("å","ä","ö"), array("a","a","o"), utf8_decode(utf8_encode($str)));
+		$str = str_replace(array("Ã¥","Ã¤","Ã¶"), array("a","a","o"), utf8_decode(utf8_encode($str)));
 		
 	  $str = preg_replace('/[^a-z0-9-_()]/', '_', $str);
 	  $str = trim(preg_replace('/_+/', '_', $str), '_');

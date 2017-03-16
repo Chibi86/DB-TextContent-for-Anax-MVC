@@ -6,30 +6,30 @@ namespace Chp\TextContent;
  */
 class PageControllerTest extends \PHPUnit_Framework_TestCase
 {
-	private $app;
-	private $di;
-  
-	/**
-	 * Basic setup for database to perform tests against.
-	 *
-	 */
-	protected function setUp()
-	{
-		$this->di = new \Anax\DI\CDIFactoryDefault();
-		$this->app = new \Anax\MVC\CApplicationBasic($this->di);
+  private $app;
+  private $di;
+
+  /**
+   * Basic setup for database to perform tests against.
+   *
+   */
+  protected function setUp()
+  {
+    $this->di = new \Anax\DI\CDIFactoryDefault();
+    $this->app = new \Anax\MVC\CApplicationBasic($this->di);
     
     $this->initializeApp();
   }
   
   /**
-	 * Helper function to initialize $di and $app
-	 *
-	 */
-	private function initializeApp()
-	{
-		$this->app->PageController = new \Chp\TextContent\PageController();
-		$this->app->PageController->setDI($this->di);
-	}
+   * Helper function to initialize $di and $app
+   *
+   */
+  private function initializeApp()
+  {
+    $this->app->PageController = new \Chp\TextContent\PageController();
+    $this->app->PageController->setDI($this->di);
+  }
   
   /**
    * Testcase prepare page

@@ -7,59 +7,59 @@ namespace Chp\TextContent;
  */
 class ValidContentTest extends \PHPUnit_Framework_TestCase
 {
-	private $app;
-	private $di;
-  
+  private $app;
+  private $di;
+
   /**
-	 * Basic setup for database to perform tests against.
-	 *
-	 */
-	protected function setUp()
-	{
-		$this->di = new \Anax\DI\CDIFactoryDefault();
-		$this->app = new \Anax\MVC\CApplicationBasic($this->di);
+   * Basic setup for database to perform tests against.
+   *
+   */
+  protected function setUp()
+  {
+    $this->di = new \Anax\DI\CDIFactoryDefault();
+    $this->app = new \Anax\MVC\CApplicationBasic($this->di);
     
     $this->initializeApp();
   }
   
   /**
-	 * Helper function to initialize $di and $app
-	 *
-	 */
-	private function initializeApp()
-	{
-		$this->app->ValidContent = new \Chp\TextContent\ValidContent();
-		$this->app->ValidContent->setDI($this->di);
+   * Helper function to initialize $di and $app
+   *
+   */
+  private function initializeApp()
+  {
+    $this->app->ValidContent = new \Chp\TextContent\ValidContent();
+    $this->app->ValidContent->setDI($this->di);
     $this->app->ValidContent->initialize();
-	}
+  }
   
   /**
-	 * Test-case create a link to the content, based on it's type.
-	 *
-	 */
-	public function testGetUrlToContent() {
+   * Test-case create a link to the content, based on it's type.
+   *
+   */
+  public function testGetUrlToContent() {
     $app = $this->app;
     
     $this->assertNull($app->ValidContent->getUrlToContent((object) ['type' => 'test']), "Return url on no existing content-type.");
     $this->assertNotNull($app->ValidContent->getUrlToContent((object) ['type' => 'blog-post', 'slug' => 'test']), "Returns no url on content-type 'blog-post'");
-	}
+  }
   
   /**
-	 * Test-case get content types array 
-	 *
-	 */
-	public function testGetTypes(){
-		$app = $this->app;
+   * Test-case get content types array 
+   *
+   */
+  public function testGetTypes(){
+    $app = $this->app;
     
     $types = $app->ValidContent->getTypes();
 		
     $this->assertTrue((count($types) > 0), "Returns no content-types.");
-	}
+  }
   
   /**
-	 * Test-case get filters 
-	 *
-	 */
+   * Test-case get filters 
+   *
+   */
   public function testGetFilters(){
     $filters = $this->app->ValidContent->getFilters();
     
@@ -76,15 +76,15 @@ class ValidContentTest extends \PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Test-case check so the choosed type exist.
-	 *
-	 */
-	public function testCheckType(){
+   * Test-case check so the choosed type exist.
+   *
+   */
+  public function testCheckType(){
     $app = $this->app;
 		
     $this->assertNotTrue($app->ValidContent->checkType('test'), "Return true on no existing content-type.");
     $this->assertTrue($app->ValidContent->checkType('page'), "Return false on content-type 'page'.");
-	}
+  }
   
   /**
    * Test-case check date time

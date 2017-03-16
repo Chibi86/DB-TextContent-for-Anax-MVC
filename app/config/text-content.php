@@ -8,5 +8,5 @@
   )));
   define('CHP_TC_TYPES', serialize(array(	    // Content types
     'blog-post'   => ['url' => 'blog/read/',  'field' => 'slug', 	'prefix' => '', 	'title' => 'Blog'],
-		'page'        => ['url' => 'page/page/', 	'field' => 'url', 	'prefix' => '', 	'title' => 'Page']
+    'page'        => ['url' => 'page/page/', 	'field' => 'url', 	'prefix' => '', 	'title' => 'Page']
   )));

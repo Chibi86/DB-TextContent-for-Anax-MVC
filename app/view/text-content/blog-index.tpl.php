@@ -6,16 +6,16 @@
 
 <?php foreach($posts as $post): ?>
 <article class="blog-post">
-		<header>
+  <header>
       <h2><a href="<?=$post->showUrl;?>"><?=$post->title;?></a></h2>
       <strong>Published:</strong>
       <time datetime="<?=$post->published;?>"><?=$post->published;?></time>
   <?php if(!is_null($post->updated) && $post->updated > $post->published) : ?>
       (<time datetime="<?=$post->updated;?>" title="Updated"><?=$post->updated;?></time>)
   <?php endif; ?>
-      <!--<strong>Author:</strong> <a href="<--?=$post->authorUrl;?>"><--?=$post->authorName;?></a>-->
+      <!--<strong>Author:</strong> <a href="<!--?=$post->authorUrl;?>"><!--?=$post->authorName;?></a>-->
     </header>		
-		<section class="ingress"><?=$post->ingress;?></section>
+    <section class="ingress"><?=$post->ingress;?></section>
     <p><a href="<?=$post->showUrl;?>">Read more..</a></p>
     <ul class="tags">
   <?php if(isset($post->tags)): ?>
@@ -23,7 +23,6 @@
       <li><a href="<?=$tag->url;?>" class="tag"><?=$tag->tag;?></a></li>
     <?php endforeach; ?>
   <?php endif; ?>
-		</ul>
+    </ul>
 </article>
-<?php endforeach; ?>
-    
+<?php endforeach; ?> 

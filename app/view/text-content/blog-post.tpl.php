@@ -1,19 +1,19 @@
 <h1><?=$title;?></h1>
 
 <article class="blog-post">
-		<header>
+    <header>
       <h2><?=$post->title;?></h2>
       <strong>Published:</strong>
       <time datetime="<?=$post->published;?>"><?=$post->published;?></time>
 <?php if(!is_null($post->updated) && $post->updated > $post->published) : ?>
       (<time datetime="<?=$post->updated;?>" title="Updated"><?=$post->updated;?></time>)
 <?php endif; ?>
-      <!--• <strong>Author:</strong> <a href="<--?=$post->authorUrl;?>"><--?=$post->authorName;?></a>-->
+      <!--• <strong>Author:</strong> <a href="<!--?=$post->authorUrl;?>"><!--?=$post->authorName;?></a>-->
     </header>		
-		<section class="ingress"><?=$post->ingress;?></section>
+    <section class="ingress"><?=$post->ingress;?></section>
     <section class="bodytext">
-			<?=$post->text;?>
-		</section>
+      <?=$post->text;?>
+    </section>
     <section class="tag-section">
       <ul class="tags">
   <?php foreach($post->tags as $tag) : ?>

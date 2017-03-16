@@ -1,26 +1,27 @@
 <?php
 namespace Chp\TextContent;
+
 /**
  * A test class
  *
  */
 class ContentTest extends \PHPUnit_Framework_TestCase
 {
-	private $app;
-	private $di;
-  
-	/**
-	 * Basic setup for database to perform tests against.
-	 *
-	 */
-	protected function setUp()
-	{
-		$this->di = new \Anax\DI\CDIFactoryDefault();
-		$this->app = new \Anax\MVC\CApplicationBasic($this->di);
-		$this->di->setShared('db', function() {
-			$db = new \Mos\Database\CDatabaseBasic();
-			$db->setOptions(['dsn' => "sqlite::memory:", "verbose" => false, 'table_prefix' => ""]);
-			$db->connect();
+private $app;
+private $di;
+
+  /**
+   * Basic setup for database to perform tests against.
+   *
+   */
+  protected function setUp()
+  {
+    $this->di = new \Anax\DI\CDIFactoryDefault();
+    $this->app = new \Anax\MVC\CApplicationBasic($this->di);
+    $this->di->setShared('db', function() {
+      $db = new \Mos\Database\CDatabaseBasic();
+      $db->setOptions(['dsn' => "sqlite::memory:", "verbose" => false, 'table_prefix' => ""]);
+      $db->connect();
       
       return $db;
     });
@@ -30,14 +31,14 @@ class ContentTest extends \PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Helper function to initialize $di and $app
-	 *
-	 */
-	private function initializeApp()
-	{
-		$this->app->Content = new \Chp\TextContent\Content();
-		$this->app->Content->setDI($this->di);
-	}
+   * Helper function to initialize $di and $app
+   *
+   */
+  private function initializeApp()
+  {
+    $this->app->Content = new \Chp\TextContent\Content();
+    $this->app->Content->setDI($this->di);
+  }
   
   /**
    * Restore or setup database

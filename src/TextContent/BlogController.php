@@ -19,8 +19,8 @@ class BlogController implements \Anax\DI\IInjectionAware
   use \Anax\DI\TInjectable;
 	
   /**
-	 * Properties
-	 */
+   * Properties
+   */
   private $content = null;
   private $postsPerPage;
   private $urlPrefix;
@@ -41,7 +41,7 @@ class BlogController implements \Anax\DI\IInjectionAware
     $this->urlPrefix = CHP_TC_URLPREFIX;
   }
   
-   /**
+  /**
    * Index action - uses tagAction whitout tag
    *
    * @return   void
@@ -88,7 +88,6 @@ class BlogController implements \Anax\DI\IInjectionAware
    * @return  void
    */
   public function readAction($slug = null){
-    
     if(is_null($slug)){
       $this->response->redirect($this->url->create("{$this->urlPrefix}blog/"));
     }

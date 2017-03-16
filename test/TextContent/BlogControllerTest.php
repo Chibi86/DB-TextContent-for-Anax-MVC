@@ -6,21 +6,21 @@ namespace Chp\TextContent;
  */
 class BlogControllerTest extends \PHPUnit_Framework_TestCase
 {
-	private $app;
-	private $di;
+  private $app;
+  private $di;
   
-	/**
-	 * Basic setup for database to perform tests against.
-	 *
-	 */
-	protected function setUp()
-	{
-		$this->di = new \Anax\DI\CDIFactoryDefault();
-		$this->app = new \Anax\MVC\CApplicationBasic($this->di);
+  /**
+   * Basic setup for database to perform tests against.
+   *
+   */
+  protected function setUp()
+  {
+    $this->di = new \Anax\DI\CDIFactoryDefault();
+    $this->app = new \Anax\MVC\CApplicationBasic($this->di);
     $this->di->setShared('db', function() {
-			$db = new \Mos\Database\CDatabaseBasic();
-			$db->setOptions(['dsn' => "sqlite::memory:", "verbose" => false, 'table_prefix' => ""]);
-			$db->connect();
+      $db = new \Mos\Database\CDatabaseBasic();
+      $db->setOptions(['dsn' => "sqlite::memory:", "verbose" => false, 'table_prefix' => ""]);
+      $db->connect();
       
       return $db;
     });
@@ -30,15 +30,15 @@ class BlogControllerTest extends \PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Helper function to initialize $di and $app
-	 *
-	 */
-	private function initializeApp()
-	{
-		$this->app->BlogController = new \Chp\TextContent\BlogController();
-		$this->app->BlogController->setDI($this->di);
+   * Helper function to initialize $di and $app
+   *
+   */
+  private function initializeApp()
+  {
+    $this->app->BlogController = new \Chp\TextContent\BlogController();
+    $this->app->BlogController->setDI($this->di);
     $this->app->BlogController->initialize();
-	}
+  }
   
   /**
    * Restore or setup database
@@ -48,8 +48,7 @@ class BlogControllerTest extends \PHPUnit_Framework_TestCase
     $this->app->db->dropTableIfExists('content')->execute();
 
     $this->app->db->createTable(
-      'content',
-      [
+      'content',[
         'id'        => ['integer', 'primary key', 'not null', 'auto_increment'],
         'slug'      => ['char(80)'],
         'url'       => ['char(80)'],
@@ -63,8 +62,7 @@ class BlogControllerTest extends \PHPUnit_Framework_TestCase
         'created'   => ['datetime'],
         'updated'   => ['datetime'],
         'deleted'   => ['datetime']
-      ]
-    )->execute();
+    ])->execute();
     
     $this->app->db->insert(
       'content',
@@ -102,13 +100,11 @@ class BlogControllerTest extends \PHPUnit_Framework_TestCase
     $this->app->db->dropTableIfExists('content_tags')->execute();
     
     $this->app->db->createTable(
-      'content_tags',
-      [
+      'content_tags',[
         'idContent' => ['integer', 'not null'],
         'tag'       => ['varchar(150)', 'not null'],
         'slug'      => ['varchar(150)', 'not null']
-      ]
-    )->execute();
+      ])->execute();
     
     $this->app->db->insert(
       'content_tags',

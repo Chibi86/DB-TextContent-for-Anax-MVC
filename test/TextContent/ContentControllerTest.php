@@ -34,30 +34,32 @@ class TestForm {
  */
 class ContentControllerTest extends \PHPUnit_Framework_TestCase
 {
-	private $app;
-	private $di;
-  
-	/**
-	 * Basic setup for database to perform tests against.
-	 *
-	 */
-	protected function setUp()
-	{
-		$this->di = new \Anax\DI\CDIFactoryDefault();
-		$this->app = new \Anax\MVC\CApplicationBasic($this->di);
-		$this->di->setShared('db', function() {
-			$db = new \Mos\Database\CDatabaseBasic();
-			$db->setOptions(['dsn' => "sqlite::memory:", "verbose" => false, 'table_prefix' => ""]);
-			$db->connect();
+  private $app;
+  private $di;
+
+  /**
+  * Basic setup for database to perform tests against.
+  *
+  */
+  protected function setUp()
+  {
+    $this->di = new \Anax\DI\CDIFactoryDefault();
+    $this->app = new \Anax\MVC\CApplicationBasic($this->di);
+    $this->di->setShared('db', function() {
+      $db = new \Mos\Database\CDatabaseBasic();
+      $db->setOptions(['dsn' => "sqlite::memory:", "verbose" => false, 'table_prefix' => ""]);
+      $db->connect();
       
       return $db;
     });
+    
     $this->di->setShared('session', function () {
         $session = new \Anax\Session\CSession();
         $session->configure(ANAX_APP_PATH . 'config/session.php');
         //$session->start();
         return $session;
     });
+    
     /*$this->di->setShared('user', function () {
         $user = new \Anax\Users\UserSession();
         $user->setDI($this->di);
@@ -69,15 +71,15 @@ class ContentControllerTest extends \PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Helper function to initialize $di and $app
-	 *
-	 */
-	private function initializeApp()
-	{
-		$this->app->ContentController = new \Chp\TextContent\ContentController();
-		$this->app->ContentController->setDI($this->di);
+   * Helper function to initialize $di and $app
+   *
+   */
+  private function initializeApp()
+  {
+    $this->app->ContentController = new \Chp\TextContent\ContentController();
+    $this->app->ContentController->setDI($this->di);
     $this->app->ContentController->initialize();
-	}
+  }
   
   /**
    * Restore or setup database
@@ -247,15 +249,15 @@ class ContentControllerTest extends \PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Test-case check so the choosed type exist.
-	 *
-	 */
-	public function testCheckType(){
+   * Test-case check so the choosed type exist.
+   *
+   */
+  public function testCheckType(){
     $app = $this->app;
-		
+
     $this->assertNotTrue($app->ContentController->checkType('test'), "Return true on no existing content-type.");
     $this->assertTrue($app->ContentController->checkType('page'), "Return false on content-type 'page'.");
-	}
+  }
   
   /**
    * Test-case check date time

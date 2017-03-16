@@ -101,6 +101,8 @@ v1.3.1 (2017-03-16)
 * Removed: Slugify on content url-field, user need to follow slugify standard anyway
 * Bugfix: Update date on blog post and page now only show when updates has been made after published
 * Bugfix: Now all url:s got prefix, before some has been missed
+* Bugfix: Fix so php 7 and 7.1 will test with Travis
+* And more...
 
 v1.3.0 (2017-03-16)
 

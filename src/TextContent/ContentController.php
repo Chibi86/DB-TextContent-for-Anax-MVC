@@ -21,8 +21,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   use \Anax\DI\TInjectable;
   
   /**
-	 * Properties
-	 */
+   * Properties
+   */
   private $content;
   private $valid;
   private $contentPerPage; // Limit contents on list page
@@ -50,11 +50,11 @@ class ContentController implements \Anax\DI\IInjectionAware
   }
   
   /**
-	 * Index content - use listAction 
+   * Index content - use listAction 
    *
-	 * @return		void
-	 */
-	public function indexAction(){
+   * @return		void
+   */
+  public function indexAction(){
     $this->listAction();
   }
   
@@ -173,38 +173,35 @@ class ContentController implements \Anax\DI\IInjectionAware
   }
   
   /**
-	 *  List content (by type)
+   *  List content (by type)
    *
-	 * @param     string  $type	  Type to list
+   * @param     string  $type	  Type to list
    * @param     int     $page   Page that paging is on
-	 * @return		void
-	 */
-	public function listAction($type = null, $published = false, $page = null){
+   * @return		void
+   */
+  public function listAction($type = null, $published = false, $page = null){
     $type      = ($this->valid->checkType($type)) ? $type : null;
     $title     = "All Content {$type} listed";
     $published = boolval($published);
 
     $form   = $this->listForm($type, $published);
     $form->check();
-    
+
     if(!is_null($type))
       $contents = $this->content->getAllContentOfType($type, $page, $this->contentPerPage, $published);
     else
       $contents = $this->content->getAllContent($page, $this->contentPerPage, $published);
-    
-    $contents = $this->prepareListContent($contents);
-    
-    $this->theme->setTitle($title);
-    $this->views->add('text-content/list', 
-      [
-        'title'     => $title,
-        'form'      => $form->getHTML(array('novalidate' => true)),
-        'contents' 	=> $contents,
-        'addUrl'	  => $this->url->create("{$this->urlPrefix}content/add/"),
-        'setupUrl'  => $this->url->create("{$this->urlPrefix}content/setup/")
-      ]
-    );
 
+    $contents = $this->prepareListContent($contents);
+
+    $this->theme->setTitle($title);
+    $this->views->add('text-content/list', [
+      'title'     => $title,
+      'form'      => $form->getHTML(array('novalidate' => true)),
+      'contents' 	=> $contents,
+      'addUrl'	  => $this->url->create("{$this->urlPrefix}content/add/"),
+      'setupUrl'  => $this->url->create("{$this->urlPrefix}content/setup/")
+    ]);
   }
   
   /**
@@ -259,37 +256,37 @@ class ContentController implements \Anax\DI\IInjectionAware
     ]);
   }
 	
-	/**
-	 * Remove content
-	 *
+  /**
+   * Remove content
+   *
    * @param   int     $id       Index to content to remove
-	 * @return  string  $error    Database-error msg
-	 */
-	public function removeAction($id = null){
-		$action = "Delete";
+   * @return  string  $error    Database-error msg
+   */
+  public function removeAction($id = null){
+    $action = "Delete";
     $title = "Delete content";
     $url = $this->url->create("{$this->urlPrefix}content/");
-    
+
     if(is_null($id) || !is_numeric($id))
-			$this->response->redirect($url);
-    
+      $this->response->redirect($url);
+
     $content = $this->content->find($id);
-    
+
     if(is_null($content->id))
       $this->response->redirect($url);
-    
+
     $form = $this->confirmForm($url);
     $status = $form->Check();
-    
+
     if ($status === true) {
       $now = date('Y-m-d H:i:s');
-      
+
       $content->deleted = $now;
       $content->save();
-      
+
       $this->response->redirect($url);
     }
-    
+
     $this->theme->setTitle($title);
     $this->views->add('text-content/action', [
       'title'  => $title,
@@ -298,7 +295,7 @@ class ContentController implements \Anax\DI\IInjectionAware
       'which'   => htmlspecialchars($content->title, ENT_QUOTES),
       'form'    => $form->getHTML(['novalidate' => true]),
     ], 'main');
-	}
+  }
   
   /**
    * Prepare form to add or edit content

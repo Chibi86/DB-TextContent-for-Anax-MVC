@@ -19,8 +19,8 @@ class PageController implements \Anax\DI\IInjectionAware
   use \Anax\DI\TInjectable;
   
   /**
-	 * Properties
-	 */
+   * Properties
+   */
   private $content;
   private $urlPrefix;
   
