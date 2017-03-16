@@ -590,9 +590,9 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare save of content to database
    *
-   * @param   object    $form     Form object
-   * @param   string    $oldSlug  Old slug for content to compare
-   * @return  array     $content  Prepare content array
+   * @param   \Mos\HTMLForm\CForm   $form     Form object
+   * @param   string                $oldSlug  Old slug for content to compare
+   * @return  array                 $content  Prepare content array
    */  
   public function prepareSaveContent($form, $oldSlug = null){
     $now = date('Y-m-d H:i:s');
