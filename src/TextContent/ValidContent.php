@@ -154,20 +154,20 @@ class ValidContent implements \Anax\DI\IInjectionAware
   }
   
   /**
-	 * Check so the selected filter exist.
-	 *
-	 * @param     string 	  $filter   Selected filter
-	 * @return    boolean   $result   Return the result of test
-	 */
-	public function checkFilter($filter = null){
-	  if(!empty($filter)){
+   * Check so the selected filter exist.
+   *
+   * @param     string 	  $filter   Selected filter
+   * @return    boolean   $result   Return the result of test
+   */
+  public function checkFilter($filter = null){
+    if(!empty($filter)){
       // For each filter, check if the filter exist
       foreach($this->filters as $val){
         if($val == $filter)
           return true;
+        }
+        return false;
       }
-      return false;
-    }
-	  return true;
-	}
+    return true;
+  }
 }
