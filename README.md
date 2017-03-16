@@ -44,7 +44,7 @@ The following external modules are excluded byt will be needed for run this clas
 Install instructions
 --------------------
 
-### 1. First you will need to install the other modules (if not got theim already). 
+### 1. First you will need to install the other modules (if you not got them already). 
 
 ### 2. The easiest way to install this is using composer. Add this to your composer.json: 
 
@@ -82,7 +82,9 @@ Don`t forget to config database settings for CDatabase in your frontcontroller e
 
 Set chmod 777 on `webroot/db` if you want to use sqlite, otherwish config mysql for CDatabase in frontcontroller etc.
 
-### 5. Controllers has a url-prefix variable that probly you need to change if you use your own frontcontroller or .htaccess to redirect
+### 5. Change config-file
+
+You probly should change url-prefix and other settings in `app/config/text-content.php`.
 
 ### 6. Go to `[your-url]/[frontcontroller]/content/setup` to setup database TextContent tables to database. 
 
@@ -92,7 +94,17 @@ History
 
 ###History for Database TextContent for ANAX-MVC 
 
-v1.2.5 (2017-03-14)
+v1.3.0 (2017-03-16)
+
+* Updated: Install guide (readme)
+* Added: Config-file 'app/config/text-content.php'
+* Added: Help class 'ValidContent' to validate and return valid information
+* Added: Test-cases for 'ValidContent'
+* Removed: Some functions and rebuild in 'ContentController' to just call to 'ValidContent' functions
+* Removed: Some test-cases for 'ContentController'
+* And more...
+
+v1.2.5 (2017-03-14 - 2017-03-15)
 
 * Added: More testcases, and testcases for Blog and Page controllers
 * Change: Clean up classes with smaller functions

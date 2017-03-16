@@ -1,6 +1,8 @@
 <?php
 namespace Chp\TextContent;
 
+include_once(__DIR__ . '/../../app/config/text-content.php');
+
 /**
  * Model for text content
  * Made by Rasmus Berg (c) 2014-2017

@@ -1,6 +1,8 @@
 <?php
 namespace Chp\TextContent;
 
+include_once(__DIR__ . '/../../app/config/text-content.php');
+
 /**
  * Text content controller
  * Made by Rasmus Berg (c) 2014-2017
@@ -21,15 +23,10 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
 	 * Properties
 	 */
-  private $content = null;
-  private $limitListPerPage = null;       // Limit contents on list page
-  private $minimumLength    = 3;          // Minimum length on text-fields (ex. ingress, title etc)
-  private $types 		        = [		        // Content types
-		'blog-post'   => ['url' => 'blog/read/',  'field' => 'slug', 	'perfix' => '', 	'title' => 'Blog'],
-		'page'        => ['url' => 'page/page/', 	'field' => 'url', 	'perfix' => '', 	'title' => 'Page']
-	];
-  private $filters = array('bbcode','clickable','markdown', 'nl2br', 'shortcode');
-  private $urlPrefix = "content.php/";
+  private $content        = null;
+  private $contentPerPage; // Limit contents on list page
+  private $urlPrefix;
+  private $miniLength;
   
   /**
    * Initialize the controller
@@ -39,6 +36,13 @@ class ContentController implements \Anax\DI\IInjectionAware
   public function initialize(){
     $this->content = new \Chp\TextContent\Content();
     $this->content->setDI($this->di);
+    $this->valid = new \Chp\TextContent\ValidContent();
+    $this->valid->setDI($this->di);
+    $this->valid->initialize();
+    
+    $this->contentPerPage = CHP_TC_CONTENTPERPAGE;
+    $this->urlPrefix      = CHP_TC_URLPREFIX;
+    $this->miniLength     = CHP_TC_MINILENGTH;
   }
   
   /**
@@ -172,7 +176,7 @@ class ContentController implements \Anax\DI\IInjectionAware
 	 * @Return		Void
 	 */
 	public function listAction($type = null, $published = false, $page = null){
-    $type      = ($this->checkType($type)) ? $type : null;
+    $type      = ($this->valid->checkType($type)) ? $type : null;
     $title     = "All Content {$type} listed";
     $published = boolval($published);
 
@@ -180,9 +184,9 @@ class ContentController implements \Anax\DI\IInjectionAware
     $form->check();
     
     if(!is_null($type))
-      $contents = $this->content->getAllContentOfType($type, $page, $this->limitListPerPage, $published);
+      $contents = $this->content->getAllContentOfType($type, $page, $this->contentPerPage, $published);
     else
-      $contents = $this->content->getAllContent($page, $this->limitListPerPage, $published);
+      $contents = $this->content->getAllContent($page, $this->contentPerPage, $published);
     $contents = $this->prepareListContent($contents);
     
     $this->theme->setTitle($title);
@@ -289,7 +293,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     $this->views->add('text-content/action', [
       'title'  => $title,
       'toDo'    => strtolower($action),
-      'toWhat'  => strtolower($this->getTypeTitle($content->type)),
+      'toWhat'  => strtolower($this->valid->getTypeTitle($content->type)),
       'which'   => htmlentities($content->title),
       'form'    => $form->getHTML(['novalidate' => true]),
     ], 'main');
@@ -304,7 +308,7 @@ class ContentController implements \Anax\DI\IInjectionAware
    */
   private function listForm($type = null, $published = false){
     
-    $type_options      = array_merge([0 => "Select a type of content"], $this->getTypes());
+    $type_options      = array_merge([0 => "Select a type of content"], $this->valid->getTypes());
     
     $form = new \Mos\HTMLForm\CForm([], [
         'type' => [
@@ -348,7 +352,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     
     $slug = (isset($slug)) ? $slug : NULL;
     
-    $type_options      = $this->getTypes();
+    $type_options      = $this->valid->getTypes();
     
     $form = new \Mos\HTMLForm\CForm([], [
         'id'      => [
@@ -357,13 +361,13 @@ class ContentController implements \Anax\DI\IInjectionAware
         ],
         'title' => [
           'type'        => 'text',
-          'label'       => 'Title: (Between ' . $this->minimumLength . ' to 80 chars)',
+          'label'       => 'Title: (Between ' . $this->miniLength . ' to 80 chars)',
           'maxlength'   => 80,
           'required'    => true,
           'value'       => (isset($title)) ? $title : '',
           'validation'  => [
                               'custom_test' => array(
-                                'message' => 'Minmum length is ' . $this->minimumLength . ' chars.', 
+                                'message' => 'Minmum length is ' . $this->miniLength . ' chars.', 
                                 'test'    => array($this, 'minimumLength')
                               )
                            ]
@@ -388,19 +392,19 @@ class ContentController implements \Anax\DI\IInjectionAware
           'required'    => true,
           'validation'  => [
                               'custom_test' => array(
-                                'message' => 'Minmum length is ' . $this->minimumLength . ' chars.', 
+                                'message' => 'Minmum length is ' . $this->miniLength . ' chars.', 
                                 'test'    => array($this, 'minimumLength')
                               )
                            ]
         ],
         'text' => [
           'type'        => 'textarea',
-        	'label'       => 'Text: (minimum 3 chars)',
+        	'label'       => 'Text: (minimum ' . $this->miniLength . ' chars)',
           'value'       => (isset($text)) ? $text : '',
           'required'    => true,
           'validation'  => [
                             'custom_test' => array(
-                              'message' => 'Minmum length is ' . $this->minimumLength . ' chars.', 
+                              'message' => 'Minmum length is ' . $this->miniLength . ' chars.', 
                               'test'    => array($this, 'minimumLength')
                             )
                            ]
@@ -428,7 +432,7 @@ class ContentController implements \Anax\DI\IInjectionAware
         'filters' => [
           'type'        => 'checkbox-multiple',
           'label'       => 'Text filter:',
-          'values'      => $this->filters,
+          'values'      => $this->valid->getFilters(),
           'checked'     => (isset($filters)) ? explode(',', $filters) : array(),
           'validation'  => [
                               'custom_test' => array(
@@ -546,7 +550,7 @@ class ContentController implements \Anax\DI\IInjectionAware
         $this->db->execute([
           $id,
           $tag,
-          $this->slugify($tag)
+          $this->valid->slugify($tag)
         ]);
       }
     }
@@ -562,18 +566,18 @@ class ContentController implements \Anax\DI\IInjectionAware
     $results = array();
     
     foreach($contents AS $key => $content){
-      $available = $this->checkIfAvailable($content->published);
+      $available = $this->valid->checkIfAvailable($content->published);
       $results[$key] = (object)[];
       
       foreach($content as $key2 => $value){
         $results[$key]->{$key2} = $value;
       }
       
-      $results[$key]->typeTxt      = $this->getTypeTitle($content->type);
+      $results[$key]->typeTxt      = $this->valid->getTypeTitle($content->type);
       $results[$key]->title        = htmlspecialchars($content->title, ENT_QUOTES);
       $results[$key]->editUrl      = $this->url->create($this->urlPrefix . "content/edit/{$content->id}");
       $results[$key]->removeUrl    = $this->url->create($this->urlPrefix . "content/remove/{$content->id}");
-      $results[$key]->showUrl      = $this->getUrlToContent($content);
+      $results[$key]->showUrl      = $this->valid->getUrlToContent($content);
       $results[$key]->available    = ((!$available) ? "not-" : null) . "published";
       $results[$key]->publishedTxt  = ($available) ? $contents[$key]->published : "Not published yet";
     }
@@ -596,7 +600,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     $content = array(
       'title'     => $form->Value('title'),
       'slug'      => $newSlug,
-      'url'       => $this->slugify($form->Value('url')),
+      'url'       => $this->valid->slugify($form->Value('url')),
       'ingress'   => $form->Value('ingress'),
       'text'      => $form->Value('text'),
       'type'      => $form->Value('type'),
@@ -627,7 +631,7 @@ class ContentController implements \Anax\DI\IInjectionAware
    * @Return  String    $newSlug    New unique slug for content
    */
   public function prepareNewSlug($title, $type, $oldSlug = null){
-    $newSlug = $this->slugify($title);
+    $newSlug = $this->valid->slugify($title);
     
     if($oldSlug != $newSlug && isset($newSlug))
       $newSlug = $this->content->makeSlugToContent($newSlug, $type);
@@ -636,133 +640,52 @@ class ContentController implements \Anax\DI\IInjectionAware
   }
   
   /**
-   * Check if content is published
+   * Validate minimum length
    *
-   * @Param   String      $datetime     When it will be published
-   * @Return  Boolean     True/false    Validate result
+   * @Param   String    $text       Text to validate
+   * @Return  Boolean   True/False  Validate status
    */
-  public function checkIfAvailable($datetime){
-    return ($datetime <= date('Y-m-d H:i:s')) ? true : false;
+  public function minimumLength($text = null){
+    return $this->valid->minimumLength($text);
   }
   
   /**
-	 * Create a link to the content, based on its type.
-	 *
-	 * @Param  	Object  	$content	Content to link to
-	 * @Return 	String    	   	 	  With url for content
-	 */
-	public function getUrlToContent($content) {
-    if(isset($this->types[$content->type])){
-      $type = $this->types[$content->type]; // Get type from type index
-	  
-      return $this->url->create($this->urlPrefix . "{$type['url']}{$type['perfix']}{$content->{$type['field']}}");
-    }
-    
-    return null;
-	}
-	
-  /**
-	 * Return array with all content types title and keys (Use for content-type select) 
-	 *
-	 * @Return		Array		$types	Array with the types title and keys
-	 */
-	public function getTypes(){
-    $types = array();
-    
-		// Loop through and save types key as key and title as value in a new array
-		foreach($this->types AS $key => $value){
-			$types[$key] = $value['title'];
-		}
-		
-		return $types;
-	}
-  
-	/**
-	 * Return name of one specific type
-	 *
-	 * @Params  String $type  Type key
-	 * @Return  String        Type title
-	 */
-	public function getTypeTitle($type){
-		return $this->types[$type]['title'];
-	}
-  
-  /**
-	 * Create a slug of a string, to be used as url.
-	 *
-	 * @Param   String   $str  String to format as slug.
-	 * @Return  String   $str  Formatted slug. 
-	 */
-	public function slugify($str) {
-	  $str = mb_strtolower(trim($str));
-		
-		$str = str_replace(array("å","ä","ö"), array("a","a","o"), utf8_decode(utf8_encode($str)));
-		
-	  $str = preg_replace('/[^a-z0-9-_()]/', '_', $str);
-	  $str = trim(preg_replace('/_+/', '_', $str), '_');
-	  return $str;
-	}
-  
-	/**
-	 * Check so the choosed type exist.
-	 *
-	 * @Param   	String		$type		Choosed type on content
-	 * @Returns 	Boolean      			Validate result
-	 */
-	public function checkType($type){
-		return isset($this->types[$type]); 
-	}
-  
-  /**
-   * Validate posted datetime so it is correct
+   * Validate slug
    *
-   * @Param   String    $datetime      Posted datetime to check  
-   * @Return  Boolean   True/false     Validate status
+   * @Param   String    $slug       Slug to validate
+   * @Return  Boolean   True/False  Validate status
    */
-  public function checkDatetime($datetime){
-    if(isset($datetime) && !empty($datetime)){
-      $format = 'Y-m-d H:i:s';
-      $d = \DateTime::createFromFormat($format, $datetime);
-      return $d && $d->format($format) == $datetime;
-    }
-    return true;
+  public function validateSlug($slug = null){
+    return $this->valid->validateSlug($slug);
   }
   
   /**
-   * Minimum length (set by $this->minimumLength)
+   * Validate type
    *
-   * @Param   String    $value        Value from form-element to validate
-   * @Return  Boolean   True/false    Validate result
+   * @Param   String    $type   Type to validate
+   * @Return  Boolean   True/False  Validate status
    */
-  public function minimumLength($value){
-    return (strlen($value) >= $this->minimumLength);
+  public function checkType($type = null){
+    return $this->valid->checkType($type);
   }
   
   /**
-   * Validate slug url
+   * Validate filter
    *
-   * @Param   String    $url          Url to validate
-   * @Return  Boolean   True/false    True if valid otherwish false
+   * @Param   String    $filter   Filter to validate
+   * @Return  Boolean   True/False  Validate status
    */
-  public function validateSlug($url){
-    return ($this->slugify($url) == $url);
+  public function checkFilter($filter = null){
+    return $this->valid->checkFilter($filter);
   }
   
   /**
-	 * Check so the select filters exist.
-	 *
-	 * @Param     Array 	  $filters  Array with select filters
-	 * @Return    Boolean   $result   Return the result of test
-	 */
-	public function checkFilter($filter = null){
-	  if(!empty($filter)){
-      // For each filter, check if the filter exist
-      foreach($this->filters as $val){
-        if($val == $filter)
-          return true;
-      }
-      return false;
-    }
-	  return true;
-	}
+   * Validate date time
+   *
+   * @Param   String    $datetime   Date time to validate
+   * @Return  Boolean   True/False  Validate status
+   */
+  public function checkDatetime($datetime = null){
+    return $this->valid->checkDatetime($datetime);
+  }
 }

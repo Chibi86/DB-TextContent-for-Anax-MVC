@@ -246,39 +246,7 @@ class ContentControllerTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue(array_key_exists('created', $result), "Content created should exist!");
     $this->assertTrue(array_key_exists('author', $result), "Content author should exist!");
   }
-  
-  /**
-   * Test-case check if content is published
-   *
-   */
-  public function testCheckIfAvailable(){
-    $this->assertNotTrue($this->app->ContentController->checkIfAvailable('9999-12-31 23:59:59'), "Return true on not published content.");
-    $this->assertTrue($this->app->ContentController->checkIfAvailable('1986-08-08 00:00:00'), "Return false on published content.");
-  }
-  
-  /**
-	 * Test-case create a link to the content, based on it's type.
-	 *
-	 */
-	public function testGetUrlToContent() {
-    $app = $this->app;
-    
-    $this->assertNull($app->ContentController->getUrlToContent((object) ['type' => 'test']), "Return url on no existing content-type.");
-    $this->assertNotNull($app->ContentController->getUrlToContent((object) ['type' => 'blog-post', 'slug' => 'test']), "Returns no url on content-type 'blog-post'");
-	}
-  
-  /**
-	 * Test-case get content types array 
-	 *
-	 */
-	public function testGetTypes(){
-		$app = $this->app;
-    
-    $types = $app->ContentController->getTypes();
-		
-    $this->assertTrue((count($types) > 0), "Returns no content-types.");
-	}
-  
+ 
   /**
 	 * Test-case check so the choosed type exist.
 	 *

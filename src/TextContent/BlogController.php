@@ -1,6 +1,8 @@
 <?php
 namespace Chp\TextContent;
 
+include_once(__DIR__ . '/../../app/config/text-content.php');
+
 /**
  * A blog controller
  * Made by Rasmus Berg (c) 2014-2017
@@ -20,8 +22,8 @@ class BlogController implements \Anax\DI\IInjectionAware
 	 * Properties
 	 */
   private $content = null;
-  private $postsPerPage = null;
-  private $urlPrefix = "content.php/";
+  private $postsPerPage = CHP_TC_POSTSPERPAGE;
+  private $urlPrefix = CHP_TC_URLPREFIX;
   
   /**
    * Initialize the controller

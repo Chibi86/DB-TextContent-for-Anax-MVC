@@ -1,6 +1,8 @@
 <?php
 namespace Chp\TextContent;
 
+include_once(__DIR__ . '/../../app/config/text-content.php');
+
 /**
  * A page controller
  * Made by Rasmus Berg (c) 2014-2017
@@ -20,7 +22,7 @@ class PageController implements \Anax\DI\IInjectionAware
 	 * Properties
 	 */
   private $content = null;
-  private $urlPrefix = "content.php/";
+  private $urlPrefix = CHP_TC_URLPREFIX;
   
   /**
    * Initialize the controller
