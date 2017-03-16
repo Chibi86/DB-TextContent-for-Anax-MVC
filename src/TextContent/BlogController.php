@@ -7,12 +7,12 @@ include_once(__DIR__ . '/../../app/config/text-content.php');
  * A blog controller
  * Made by Rasmus Berg (c) 2014-2017
  *
- * @Property  Object  $di         Anax-MVC class handler
- * @Property  Object  $response   Anax-MVC Php Header class
- * @Property  Object  $url        Anax-MVC url-handler class
- * @Property  Object  $theme      Anax-MVC theme-handler class
- * @Property  Object  $views      Anax-MVC views-handler class
- * @Property  Object  $textFilter Anax-MVC textformat-handler class
+ * @property  object  $di         Anax-MVC class handler
+ * @property  object  $response   Anax-MVC Php Header class
+ * @property  object  $url        Anax-MVC url-handler class
+ * @property  object  $theme      Anax-MVC theme-handler class
+ * @property  object  $views      Anax-MVC views-handler class
+ * @property  object  $textFilter Anax-MVC textformat-handler class
  */
 class BlogController implements \Anax\DI\IInjectionAware
 {
@@ -31,6 +31,9 @@ class BlogController implements \Anax\DI\IInjectionAware
    * @Return    Void
    */
   public function initialize(){
+    if(!is_object($this->di))
+      throw new \Anax\Exception\InternalServerErrorException('"$this->di" is not valid!');
+    
     $this->content = new \Chp\TextContent\Content();
     $this->content->setDI($this->di);
   }

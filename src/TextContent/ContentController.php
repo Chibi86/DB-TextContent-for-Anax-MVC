@@ -7,14 +7,14 @@ include_once(__DIR__ . '/../../app/config/text-content.php');
  * Text content controller
  * Made by Rasmus Berg (c) 2014-2017
  *
- * @Property  Object  $di         Anax-MVC class handler
- * @Property  Object  $request    Anax-MVC $_POST, $_GET and $_SERVER handler class
- * @Property  Object  $response   Anax-MVC Php Header class
- * @Property  Object  $url        Anax-MVC url-handler class
- * @Property  Object  $theme      Anax-MVC theme-handler class
- * @Property  Object  $views      Anax-MVC views-handler class
- * @Property  Object  $textFilter Anax-MVC textformat-handler class
- * @Property  Object  $db         PDO database class
+ * @property  object  $di         Anax-MVC class handler
+ * @property  object  $request    Anax-MVC $_POST, $_GET and $_SERVER handler class
+ * @property  object  $response   Anax-MVC Php Header class
+ * @property  object  $url        Anax-MVC url-handler class
+ * @property  object  $theme      Anax-MVC theme-handler class
+ * @property  object  $views      Anax-MVC views-handler class
+ * @property  object  $textFilter Anax-MVC textformat-handler class
+ * @property  object  $db         PDO database class
  */
 class ContentController implements \Anax\DI\IInjectionAware
 {
@@ -23,7 +23,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
 	 * Properties
 	 */
-  private $content        = null;
+  private $content;
+  private $valid;
   private $contentPerPage; // Limit contents on list page
   private $urlPrefix;
   private $miniLength;
@@ -34,6 +35,9 @@ class ContentController implements \Anax\DI\IInjectionAware
    * @Return    Void
    */
   public function initialize(){
+    if(!is_object($this->di))
+      throw new \Anax\Exception\InternalServerErrorException('"$this->di" is not valid!');
+    
     $this->content = new \Chp\TextContent\Content();
     $this->content->setDI($this->di);
     $this->valid = new \Chp\TextContent\ValidContent();
@@ -302,9 +306,9 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare form to add or edit content
    *
-   * @Param   String    $type       Selected content-type
-   * @Param   Boolean   $published  If content should be published already
-   * @Return  Object    $form       CForm object
+   * @param   string    $type       Selected content-type
+   * @param   boolean   $published  If content should be published already
+   * @return  object    $form       CForm object
    */
   private function listForm($type = null, $published = false){
     
@@ -341,8 +345,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare form to add or edit content
    *
-   * @Param   Object    $values     Content values to add form elements
-   * @Return  Object    $form       CForm object
+   * @param   object    $values     Content values to add form elements
+   * @return  object    $form       CForm object
    */
   private function contentForm($values = null){
     if(isset($values) && is_object($values)){
@@ -473,8 +477,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare confirmation form
    *
-   * @Param   String   $returnUrl       Return url
-   * @Return  Object   $form            Form-object
+   * @param   string   $returnUrl       Return url
+   * @return  object   $form            Form-object
    */
   public function confirmForm($returnUrl = null){
     $returnUrl = (isset($returnUrl)) ? $returnUrl : $this->request->getBaseUrl();

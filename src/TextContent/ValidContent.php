@@ -7,7 +7,7 @@ include_once(__DIR__ . '/../../app/config/text-content.php');
  * Validate and valid help class for TextContent
  * Made by Rasmus Berg (c) 2014-2017
  *
- * @Property  Object  $url  Anax-MVC url-handler class
+ * @property  object  $url  Anax-MVC url-handler class
  */
 class ValidContent implements \Anax\DI\IInjectionAware
 {

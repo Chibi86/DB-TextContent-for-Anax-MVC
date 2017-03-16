@@ -7,7 +7,7 @@ include_once(__DIR__ . '/../../app/config/text-content.php');
  * Model for text content
  * Made by Rasmus Berg (c) 2014-2017
  *
- * @Property  Object  $db         PDO database-handler class
+ * @property  object  $db         PDO database-handler class
  */
 Class Content extends \Anax\MVC\CDatabaseModel
 {
