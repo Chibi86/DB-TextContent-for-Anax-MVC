@@ -154,9 +154,9 @@ class ValidContent implements \Anax\DI\IInjectionAware
   }
   
   /**
-	 * Check so the select filters exist.
+	 * Check so the selected filter exist.
 	 *
-	 * @param     array 	  $filters  Array with select filters
+	 * @param     string 	  $filter   Selected filter
 	 * @return    boolean   $result   Return the result of test
 	 */
 	public function checkFilter($filter = null){
