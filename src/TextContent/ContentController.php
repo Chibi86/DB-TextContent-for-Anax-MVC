@@ -561,8 +561,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare contents for show in list view
    *
-   * @param   object  $contents   Object with content objects
-   * @return  array   $results    Array with prepare content objects
+   * @param   \Mos\HTMLForm\CForm   $contents   CForm with content objects
+   * @return  array                 $results    Array with prepare content objects
    */
   public function prepareListContent($contents){
     $results = array();
