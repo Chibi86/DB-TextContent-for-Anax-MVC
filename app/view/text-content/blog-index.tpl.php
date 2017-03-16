@@ -10,7 +10,7 @@
       <h2><a href="<?=$post->showUrl;?>"><?=$post->title;?></a></h2>
       <strong>Published:</strong>
       <time datetime="<?=$post->published;?>"><?=$post->published;?></time>
-  <?php if(isset($post->updated)) : ?>
+  <?php if(!is_null($post->updated) && $post->updated > $post->published) : ?>
       (<time datetime="<?=$post->updated;?>" title="Updated"><?=$post->updated;?></time>)
   <?php endif; ?>
       <!--<strong>Author:</strong> <a href="<--?=$post->authorUrl;?>"><--?=$post->authorName;?></a>-->

@@ -94,12 +94,22 @@ History
 
 ###History for Database TextContent for ANAX-MVC 
 
+v1.3.1 (2017-03-16)
+
+* Changes: Comments now follow more phpDocumentor standard with small letters etc
+* Changes: Some corrections in the code
+* Removed: Slugify on content url-field, user need to follow slugify standard anyway
+* Bugfix: Update date on blog post and page now only show when updates has been made after published
+* Bugfix: Now all url:s got prefix, before some has been missed
+
 v1.3.0 (2017-03-16)
 
 * Updated: Install guide (readme)
 * Added: Config-file 'app/config/text-content.php'
 * Added: Help class 'ValidContent' to validate and return valid information
 * Added: Test-cases for 'ValidContent'
+* Added: InternalServerException if $di is not a object
+* Changes: Some Doc Comments to small letters so scrutinizer accept them.
 * Removed: Some functions and rebuild in 'ContentController' to just call to 'ValidContent' functions
 * Removed: Some test-cases for 'ContentController'
 * And more...

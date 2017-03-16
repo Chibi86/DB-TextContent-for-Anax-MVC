@@ -21,13 +21,13 @@ class PageController implements \Anax\DI\IInjectionAware
   /**
 	 * Properties
 	 */
-  private $content = null;
-  private $urlPrefix = CHP_TC_URLPREFIX;
+  private $content;
+  private $urlPrefix;
   
   /**
    * Initialize the controller
    *
-   * @Return    Void
+   * @return    void
    */
   public function initialize(){
     if(!is_object($this->di))
@@ -35,12 +35,14 @@ class PageController implements \Anax\DI\IInjectionAware
     
     $this->content = new \Chp\TextContent\Content();
     $this->content->setDI($this->di);
+    
+    $this->urlPrefix = CHP_TC_URLPREFIX;
   }
   
   /**
    * Index content - Redirect to startpage
    *
-   * @Return    Void
+   * @return    void
    */
   public function indexAction(){
     $url = $this->request->getGet('url');
@@ -50,8 +52,8 @@ class PageController implements \Anax\DI\IInjectionAware
   /**
    * Visit page made by database content 
    *
-   * @Param   String    $url    Select url to content  
-   * @Return  Void
+   * @param   string    $url    Select url to content  
+   * @return  void
    */
   public function pageAction($url = null){
     if(is_null($url))
@@ -80,8 +82,8 @@ class PageController implements \Anax\DI\IInjectionAware
   /**
    * Prepare page to show in view 
    *
-   * @Param   Object    $page    Page information  
-   * @Return  Object    $result  Prepared page information
+   * @param   object    $page    Page information  
+   * @return  object    $result  Prepared page information
    */
   public function preparePage($page = null){
     $result = null;
@@ -95,11 +97,11 @@ class PageController implements \Anax\DI\IInjectionAware
       
       $result->title         = htmlspecialchars($page->title, ENT_QUOTES);
       $result->ingress       = htmlspecialchars($page->ingress, ENT_QUOTES);
-      $result->text          = $this->textFilter->doFilter(htmlentities($page->text, ENT_QUOTES), $page->filters);
-      $result->editUrl       = $this->url->create("content/edit/{$page->id}");
+      $result->text          = $this->textFilter->doFilter(htmlspecialchars($page->text, ENT_QUOTES), $page->filters);
+      $result->editUrl       = $this->url->create("{$this->urlPrefix}content/edit/{$page->id}");
       //$result->authorId      = $page->author;
-      //$result->authorName    = htmlentities($page->name, ENT_QUOTES);
-      //$result->authorUrl     = $this->url->create('users/id/' . $page->author);
+      //$result->authorName    = htmlspecialchars($page->name, ENT_QUOTES);
+      //$result->authorUrl     = $this->url->create("{$this->urlPrefix}users/id/{$page->author}");
       
       //unset($result->author);
     }

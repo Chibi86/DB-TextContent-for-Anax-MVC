@@ -21,7 +21,7 @@ class ValidContent implements \Anax\DI\IInjectionAware
   /**
    * Initialize the controller
    *
-   * @Return    Void
+   * @return    void
    */
   public function initialize(){
     $this->miniLength = CHP_TC_MINILENGTH; // Minimum length on text-fields (ex. ingress, title etc)
@@ -33,14 +33,14 @@ class ValidContent implements \Anax\DI\IInjectionAware
   /**
 	 * Create a link to the content, based on its type.
 	 *
-	 * @Param  	Object  	$content	Content to link to
-	 * @Return 	String    	   	 	  With url for content
+	 * @param  	object  	$content	Content to link to
+	 * @return 	string    	   	 	  With url for content
 	 */
 	public function getUrlToContent($content) {
     if(isset($this->types[$content->type])){
       $type = $this->types[$content->type]; // Get type from type index
 	  
-      return $this->url->create($this->urlPrefix . "{$type['url']}{$type['prefix']}{$content->{$type['field']}}");
+      return $this->url->create("{$this->urlPrefix}{$type['url']}{$type['prefix']}{$content->{$type['field']}}");
     }
     
     return null;
@@ -49,7 +49,7 @@ class ValidContent implements \Anax\DI\IInjectionAware
   /**
 	 * Return array with all content types title and keys (Use for content-type select) 
 	 *
-	 * @Return		Array		$types	Array with the types title and keys
+	 * @return		array		$types	Array with the types title and keys
 	 */
 	public function getTypes(){
     $types = array();
@@ -65,7 +65,7 @@ class ValidContent implements \Anax\DI\IInjectionAware
   /**
 	 * Return array with all filters 
 	 *
-	 * @Return		Array		$this->filters	Array with the filters
+	 * @return		array		$this->filters	Array with the filters
 	 */
   public function getFilters(){
     return $this->filters; 
@@ -74,8 +74,8 @@ class ValidContent implements \Anax\DI\IInjectionAware
 	/**
 	 * Return name of one specific type
 	 *
-	 * @Params  String $type  Type key
-	 * @Return  String        Type title
+	 * @params  string  $type                        Type key
+	 * @return  string  $this->types[{key}]['title'] Type title
 	 */
 	public function getTypeTitle($type){
 		return $this->types[$type]['title'];
@@ -84,8 +84,8 @@ class ValidContent implements \Anax\DI\IInjectionAware
   /**
 	 * Create a slug of a string, to be used as url.
 	 *
-	 * @Param   String   $str  String to format as slug.
-	 * @Return  String   $str  Formatted slug. 
+	 * @param   string   $str  String to format as slug.
+	 * @return  string   $str  Formatted slug. 
 	 */
 	public function slugify($str) {
 	  $str = mb_strtolower(trim($str));
@@ -101,8 +101,8 @@ class ValidContent implements \Anax\DI\IInjectionAware
   /**
    * Check if content is published
    *
-   * @Param   String      $datetime     When it will be published
-   * @Return  Boolean     True/false    Validate result
+   * @param   string      $datetime     When it will be published
+   * @return  boolean     True/false    Validate result
    */
   public function checkIfAvailable($datetime){
     return ($datetime <= date('Y-m-d H:i:s')) ? true : false;
@@ -111,18 +111,18 @@ class ValidContent implements \Anax\DI\IInjectionAware
 	/**
 	 * Check so the choosed type exist.
 	 *
-	 * @Param   	String		$type		Choosed type on content
-	 * @Returns 	Boolean      			Validate result
+	 * @param   	string		$type		    Choosed type on content
+	 * @return 	  boolean   True/false  Validate result
 	 */
-	public function checkType($type){
-		return isset($this->types[$type]); 
+	public function checkType($type = ''){
+		return isset($this->types[$type]);
 	}
   
   /**
    * Validate posted datetime so it is correct
    *
-   * @Param   String    $datetime      Posted datetime to check  
-   * @Return  Boolean   True/false     Validate status
+   * @param   string    $datetime      Posted datetime to check  
+   * @return  boolean   True/false     Validate status
    */
   public function checkDatetime($datetime){
     if(isset($datetime) && !empty($datetime)){
@@ -136,8 +136,8 @@ class ValidContent implements \Anax\DI\IInjectionAware
   /**
    * Minimum length
    *
-   * @Param   String    $value        Value from form-element to validate
-   * @Return  Boolean   True/false    Validate result
+   * @param   string    $value        Value from form-element to validate
+   * @return  boolean   True/false    Validate result
    */
   public function minimumLength($value){
     return (strlen($value) >= $this->miniLength);
@@ -146,8 +146,8 @@ class ValidContent implements \Anax\DI\IInjectionAware
   /**
    * Validate slug url
    *
-   * @Param   String    $url          Url to validate
-   * @Return  Boolean   True/false    True if valid otherwish false
+   * @param   string    $url          Url to validate
+   * @return  boolean   True/false    True if valid otherwish false
    */
   public function validateSlug($url){
     return ($this->slugify($url) == $url);
@@ -156,8 +156,8 @@ class ValidContent implements \Anax\DI\IInjectionAware
   /**
 	 * Check so the select filters exist.
 	 *
-	 * @Param     Array 	  $filters  Array with select filters
-	 * @Return    Boolean   $result   Return the result of test
+	 * @param     array 	  $filters  Array with select filters
+	 * @return    boolean   $result   Return the result of test
 	 */
 	public function checkFilter($filter = null){
 	  if(!empty($filter)){

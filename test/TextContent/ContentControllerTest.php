@@ -229,7 +229,6 @@ class ContentControllerTest extends \PHPUnit_Framework_TestCase
     $result = $this->app->ContentController->prepareSaveContent($form, 'script_abc_script');
     
     $this->assertNotEquals($result['slug'], $form->Value('slug'), "Content slug should be slugify, but the result is the same.");
-    $this->assertNotEquals($result['url'], $form->Value('url'), "Content url should be slugify, but the result is the same.");
     $this->assertNotEquals($result['published'], $form->Value('published'), "Content published should be '{$now}', but the result is the same.");
     $this->assertTrue(array_key_exists('id', $result), "Content index should exist!");
     $this->assertTrue(array_key_exists('updated', $result), "Content updated should exist!");
@@ -246,7 +245,7 @@ class ContentControllerTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue(array_key_exists('created', $result), "Content created should exist!");
     $this->assertTrue(array_key_exists('author', $result), "Content author should exist!");
   }
- 
+  
   /**
 	 * Test-case check so the choosed type exist.
 	 *

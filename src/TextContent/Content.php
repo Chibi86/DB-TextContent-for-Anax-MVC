@@ -14,10 +14,10 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Get "all" content from database (limit by per page)
 	 *
-	 * @Param  	Integer	   		$page				Wich page paging are at
-	 * @Param  	Integer	   		$perPage		Contents per page
-   * @Param  	Boolean		    $publish 		If it needs to be publish
-	 * @Return 	Object   							    With "all" database content data
+	 * @param  	int	   		$page				Wich page paging are at
+	 * @param  	int	   		$perPage		Contents per page
+   * @param  	boolean		$publish 		If it needs to be publish
+	 * @return 	object   							With "all" database content data
 	 */
 	public function getAllContent($page = null, $perPage = null, $publish = true){
     $now    = date('Y-m-d H:i:s');
@@ -54,11 +54,11 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Get "all" content of one type from database (limit by per page)
 	 *
-	 * @Param  	Boolean 	$publish 	If it needs to be publish
-	 * @Param  	String  	$type			Wich type of content ex. blog, page etc.
-	 * @Param  	Integer	  $page			Wich page paging are at
-	 * @Param  	Integer   $perPage	Contents per page
-	 * @Return 	Object   						With "all" database content data
+	 * @param  	boolean 	$publish 	If it needs to be publish
+	 * @param  	string  	$type			Wich type of content ex. blog, page etc.
+	 * @param  	int	      $page			Wich page paging are at
+	 * @param  	int       $perPage	Contents per page
+	 * @return 	object   						With "all" database content data
 	 */
 	public function getAllContentOfType($type, $page = null, $perPage = null, $publish = true){
     $now    = date('Y-m-d H:i:s');
@@ -95,12 +95,12 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Get "all" content of one tag and one type from database
 	 *
-	 * @Param  	String  	$tag				Wich tag content should have ex. page-news etc.
-	 * @Param  	String  	$type				Wich type of content ex. blog, page etc.
-	 * @Param  	Boolean 	$publish 		If it needs to be publish
-	 * @Param  	Integer	  $page				Wich page paging are at
-	 * @Param  	Integer	  $perPage		Content per page
-	 * @Return 	Object   							With content data from database
+	 * @param  	string  	$tag				Wich tag content should have ex. page-news etc.
+	 * @param  	string  	$type				Wich type of content ex. blog, page etc.
+	 * @param  	boolean 	$publish 		If it needs to be publish
+	 * @param  	int   	  $page				Wich page paging are at
+	 * @param  	int	      $perPage		Content per page
+	 * @return 	object   							With content data from database
 	 */
 	public function getAllContentOfTag($tag, $type, $page = 0, $perPage = null, $publish = true){
 		$now    = date('Y-m-d H:i:s');
@@ -139,10 +139,10 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Get content from database by url
 	 *
-	 * @Param  	String		$url			Begin or whole url
-	 * @Param  	Boolean 	$publish 	If it needs to be publish
-	 * @Param  	String  	$type			Wich type of content ex. blog, page etc.
-	 * @Return 	Object   						With content data from database
+	 * @param  	string		$url			Begin or whole url
+	 * @param  	boolean 	$publish 	If it needs to be publish
+	 * @param  	string  	$type			Wich type of content ex. blog, page etc.
+	 * @return 	object   						With content data from database
 	 */
 	public function getContentByUrl($url, $type, $publish = true){
 		$now    = date('Y-m-d H:i:s');
@@ -171,10 +171,10 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Get content from database by slug
 	 *
-	 * @Param  	String  $slug    	Unique query to content
-	 * @Param  	Boolean $publish 	if it needs to be publish
-	 * @Param  	String  $type			Wich type of content ex. blog, page etc.
-	 * @Return 	Object   					With content data from database
+	 * @param  	string  $slug    	Unique query to content
+	 * @param  	boolean $publish 	if it needs to be publish
+	 * @param  	string  $type			Wich type of content ex. blog, page etc.
+	 * @return 	object   					With content data from database
 	 */
 	public function getContentBySlug($slug, $type, $publish = true){
     $now = date('Y-m-d H:i:s');
@@ -202,9 +202,9 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Get content from database by index
 	 *
-	 * @Param  	Integer   $id				Index to content
-	 * @Param  	Boolean		$publish 	If it needs to be publish
-	 * @Return 	Object   					 	With content data.
+	 * @param  	int       $id				Index to content
+	 * @param  	boolean		$publish 	If it needs to be publish
+	 * @return 	object   					 	With content data.
 	 */
 	public function getContentById($id, $publish = true){
     $now    = date('Y-m-d H:i:s');
@@ -236,8 +236,8 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Count all content from database
 	 *
-	 * @Param  	Boolean 	$publish 	  If it needs to be publish
-	 * @Return 	Integer   					  With count of content in database
+	 * @param  	boolean 	$publish 	  If it needs to be publish
+	 * @return 	int   					      With count of content in database
 	 */
 	public function countAllContent($publish = true){
     $now    = date('Y-m-d H:i:s');
@@ -262,9 +262,9 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Count all content of one type from database
 	 *
-	 * @Param  	Boolean 	$publish 	  If it needs to be publish
-	 * @Param  	String  	$type			  Wich type of content ex. blog, page etc.
-	 * @Return 	Integer   					  With count of content in database
+	 * @param  	boolean 	$publish 	  If it needs to be publish
+	 * @param  	string  	$type			  Wich type of content ex. blog, page etc.
+	 * @return 	int   			    		  With count of content in database
 	 */
 	public function countAllContentOfType($type, $publish = true){
     $now    = date('Y-m-d H:i:s');
@@ -290,10 +290,10 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Count all content of one tag and one type from database
 	 *
-	 * @Param  String     $tag			  Wich tag of content ex. page-news etc.
-	 * @Param  String     $type		    Wich type of content ex. blog, page etc.
-	 * @Param  Boolean    $publish    Check if it needs to be publish
-	 * @Return Integer   						  With count
+	 * @param  string     $tag			  Wich tag of content ex. page-news etc.
+	 * @param  string     $type		    Wich type of content ex. blog, page etc.
+	 * @param  boolean    $publish    Check if it needs to be publish
+	 * @return int   						      With count
 	 */
 	public function countAllContentOfTag($tag, $type, $publish = true){
     $now    = date('Y-m-d H:i:s');
@@ -328,8 +328,8 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Get tags for a content
 	 *
-	 * @Param		Integer		$id		  Index to content
-	 * @Return	Object		$res	  Tags result
+	 * @param		int     $id		  Index to content
+	 * @return	object	$res	  Tags result
 	 */
 	public function getTagsForContent($id){
 		$this->db->select("tag, slug")
@@ -344,8 +344,8 @@ Class Content extends \Anax\MVC\CDatabaseModel
 	/**
 	 * Get a tag's title by slug
 	 *
-	 * @Param		String	  $slug		  URL for tag
-	 * @Return	String					    Tag-title from database
+	 * @param		string	  $slug		  URL for tag
+	 * @return	string					    Tag-title from database
 	 */
 	public function getTagBySlug($slug){
 		$this->db->select("tag")
@@ -365,9 +365,9 @@ Class Content extends \Anax\MVC\CDatabaseModel
   /**
    * Check if slug is available, or if not get one that is
    *
-   * @Param   String    $slug       Slug to validate
-   * @Param   String    $type       Type of content
-   * @Return  String    $newSlug    A available slug
+   * @param   string    $slug       Slug to validate
+   * @param   string    $type       Type of content
+   * @return  string    $newSlug    A available slug
    */
   public function makeSlugToContent($slug, $type){
     $newSlug = $slug;
@@ -396,9 +396,9 @@ Class Content extends \Anax\MVC\CDatabaseModel
   /**
    * Get sql-query offset by per page and page
    *
-   *  @Param    Integer   $perPage    Per page
-   *  @Param    Integer   $page       Page on paging
-   *  @Return   Integer   $offset     Offset for sql-query
+   *  @param    int   $perPage    Per page
+   *  @param    int   $page       Page on paging
+   *  @return   int   $offset     Offset for sql-query
    */
   public function getOffset($perPage, $page){
     $offset = null;

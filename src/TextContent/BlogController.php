@@ -22,13 +22,13 @@ class BlogController implements \Anax\DI\IInjectionAware
 	 * Properties
 	 */
   private $content = null;
-  private $postsPerPage = CHP_TC_POSTSPERPAGE;
-  private $urlPrefix = CHP_TC_URLPREFIX;
+  private $postsPerPage;
+  private $urlPrefix;
   
   /**
    * Initialize the controller
    *
-   * @Return    Void
+   * @return    void
    */
   public function initialize(){
     if(!is_object($this->di))
@@ -36,12 +36,15 @@ class BlogController implements \Anax\DI\IInjectionAware
     
     $this->content = new \Chp\TextContent\Content();
     $this->content->setDI($this->di);
+    
+    $this->postsPerPage = CHP_TC_POSTSPERPAGE;
+    $this->urlPrefix = CHP_TC_URLPREFIX;
   }
   
    /**
    * Index action - uses tagAction whitout tag
    *
-   * @Return   Void
+   * @return   void
    */
   public function indexAction($page = null){
     $posts = $this->getBlogContent($page);
@@ -60,15 +63,15 @@ class BlogController implements \Anax\DI\IInjectionAware
   /**
    * Get blog posts by tag
    *
-   * @Param   String    $tag    Blog-tag
-   * @Param   Integer   $page   Page on paging
-   * @Return  Void
+   * @param   string  $tag    Blog-tag
+   * @param   int     $page   Page on paging
+   * @return  void
    */
   public function tagAction($tag = null, $page = null){    
     $posts = $this->getBlogContent($page, $tag);
     
     if(count($posts) == 0 && !is_null($tag))
-      $this->response->redirect($this->url->create($this->urlPrefix . 'blog/'));
+      $this->response->redirect($this->url->create("{$this->urlPrefix}blog/"));
 
     foreach($posts AS $key => $post){
       // Prepare blog post for show in view
@@ -81,19 +84,19 @@ class BlogController implements \Anax\DI\IInjectionAware
   /**
    * Get blog post by slug
    *
-   * @Param   String    $slug    Blog-tag
-   * @Return  Void
+   * @param   string    $slug    Blog-tag
+   * @return  void
    */
   public function readAction($slug = null){
     
     if(is_null($slug)){
-      $this->response->redirect($this->url->create($this->urlPrefix . 'blog/'));
+      $this->response->redirect($this->url->create("{$this->urlPrefix}blog/"));
     }
     
     $post = $this->content->getContentBySlug($slug, 'blog-post');
     
     if(empty($post)){
-      $this->response->redirect($this->url->create($this->urlPrefix . 'blog/'));
+      $this->response->redirect($this->url->create("{$this->urlPrefix}blog/"));
     }
     
     // Prepare blog post for show in view
@@ -106,23 +109,23 @@ class BlogController implements \Anax\DI\IInjectionAware
       [
         'title'         => $title,
         'post' 	        => $post,
-        'blogIndexUrl'  => $this->url->create($this->urlPrefix . 'blog/')
+        'blogIndexUrl'  => $this->url->create("{$this->urlPrefix}blog/")
       ]
     );
     
     /*$this->dispatcher->forward([
       'controller' => 'comment',
       'action'     => 'view',
-      'params'	   =>	["blog/read/{$post->slug}"]
+      'params'	   =>	["{$this->urlPrefix}blog/read/{$post->slug}"]
     ]);*/
   }
   
   /**
    * Get blog posts by tag or type
    *
-   * @Param   Int     $page    Page asked for
-   * @Param   String  $tag     Tag-slug to search for
-   * @Return  Array   $posts   A array with post objects
+   * @param   int     $page    Page asked for
+   * @param   string  $tag     Tag-slug to search for
+   * @return  object  $posts   A object with post objects
    */
   public function getBlogContent($page = null, $tag = null){
     if(!is_null($tag))
@@ -134,8 +137,8 @@ class BlogController implements \Anax\DI\IInjectionAware
   /**
    * Prepare blog post to show in view 
    *
-   * @Param   Object  $post   Blog post object
-   * @Return  Object  $result Prepared blog post object
+   * @param   object  $post   Blog post object
+   * @return  object  $result Prepared blog post object
    */
   public function preparePost($post){    
     $result = null;
@@ -150,11 +153,11 @@ class BlogController implements \Anax\DI\IInjectionAware
       $result->title        = htmlspecialchars($post->title, ENT_QUOTES);
       $result->ingress      = htmlspecialchars($post->ingress, ENT_QUOTES);
       $result->text         = $this->textFilter->doFilter(htmlspecialchars($post->text, ENT_QUOTES), $post->filters);
-      $result->editUrl      = $this->url->create("content/edit/{$post->id}");
-      $result->showUrl      = $this->url->create("blog/read/" . $post->slug);
+      $result->editUrl      = $this->url->create("{$this->urlPrefix}content/edit/{$post->id}");
+      $result->showUrl      = $this->url->create("{$this->urlPrefix}blog/read/" . $post->slug);
       //$result->authorId     = $post->author;
       //$result->authorName   = htmlspecialchars($post->name, ENT_QUOTES);
-      //$result->authorUrl    = $this->url->create('users/id/' . $post->author);
+      //$result->authorUrl    = $this->url->create("{$this->urlPrefix}users/id/{$post->author}");
       
       //unset($result->author);
       
@@ -174,9 +177,9 @@ class BlogController implements \Anax\DI\IInjectionAware
   /**
    * Show blog posts in view
    *
-   * @Param   Object  $posts   Object of blog post objects
-   * @Param   String  $tag     Tag-slug which has give this result
-   * @Return  Void
+   * @param   object  $posts   Object of blog post objects
+   * @param   string  $tag     Tag-slug which has give this result
+   * @return  void
    */
   private function postsToView($posts, $tag = null){
     $tag_title = null;

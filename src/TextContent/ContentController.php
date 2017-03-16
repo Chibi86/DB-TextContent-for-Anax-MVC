@@ -32,7 +32,7 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Initialize the controller
    *
-   * @Return    Void
+   * @return    void
    */
   public function initialize(){
     if(!is_object($this->di))
@@ -50,9 +50,9 @@ class ContentController implements \Anax\DI\IInjectionAware
   }
   
   /**
-	 *  Index content - use listAction 
+	 * Index content - use listAction 
    *
-	 * @Returns		Void
+	 * @return		void
 	 */
 	public function indexAction(){
     $this->listAction();
@@ -61,15 +61,15 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Setup content (If it allready exist it will restore database to begining)
    *
-   * @Return    Void
+   * @return    void
    */
   public function setupAction(){
     $toDo   = "Restore or setup";
     $toWhat = "content database tables";
     $title  = "{$toDo} {$toWhat}";
-    $form   = $this->confirmForm($this->url->create($this->urlPrefix . 'content/'));
+    $form   = $this->confirmForm($this->url->create("{$this->urlPrefix}content/"));
     $status = $form->check();
- 
+
     if($status === true){
     
       $this->db->dropTableIfExists('content')->execute();
@@ -106,7 +106,7 @@ class ContentController implements \Anax\DI\IInjectionAware
         'blog-post',
         'Welcome to your new blog',
         'This is example-blogg to show your new blog system!',
-        'You can start blog by visit [url=' . $this->url->create($this->urlPrefix . "content/add/") . ']Add content[/url]',
+        'You can start blog by visit [url=' . $this->url->create("{$this->urlPrefix}content/add/") . ']Add content[/url]',
         'bbcode',
         3,
         $now,
@@ -119,7 +119,7 @@ class ContentController implements \Anax\DI\IInjectionAware
         'page',
         'Welcome to your new page',
         'This is example-page to show your new page system!',
-        'You can start makeing pages by visit [url=' . $this->url->create($this->urlPrefix . "content/add/") . ']Add content[/url]',
+        'You can start makeing pages by visit [url=' . $this->url->create("{$this->urlPrefix}content/add/") . ']Add content[/url]',
         'bbcode',
         3,
         $now,
@@ -175,9 +175,9 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
 	 *  List content (by type)
    *
-	 * @Param     String    $type	  Type to list
-   * @Param     Integer   $page   Page that paging is on
-	 * @Return		Void
+	 * @param     string  $type	  Type to list
+   * @param     int     $page   Page that paging is on
+	 * @return		void
 	 */
 	public function listAction($type = null, $published = false, $page = null){
     $type      = ($this->valid->checkType($type)) ? $type : null;
@@ -191,6 +191,7 @@ class ContentController implements \Anax\DI\IInjectionAware
       $contents = $this->content->getAllContentOfType($type, $page, $this->contentPerPage, $published);
     else
       $contents = $this->content->getAllContent($page, $this->contentPerPage, $published);
+    
     $contents = $this->prepareListContent($contents);
     
     $this->theme->setTitle($title);
@@ -199,8 +200,8 @@ class ContentController implements \Anax\DI\IInjectionAware
         'title'     => $title,
         'form'      => $form->getHTML(array('novalidate' => true)),
         'contents' 	=> $contents,
-        'addUrl'	  => $this->url->create($this->urlPrefix . 'content/add/'),
-        'setupUrl'  => $this->url->create($this->urlPrefix . 'content/setup/')
+        'addUrl'	  => $this->url->create("{$this->urlPrefix}content/add/"),
+        'setupUrl'  => $this->url->create("{$this->urlPrefix}content/setup/")
       ]
     );
 
@@ -209,7 +210,7 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Add content to database
    *
-   * @Return    Void
+   * @return    void
    */
   public function addAction(){
     $action = "Add";
@@ -219,24 +220,24 @@ class ContentController implements \Anax\DI\IInjectionAware
     $form->check();
     
     $this->theme->setTitle($title);
-    $this->views->add('text-content/post', 
-      [
+    
+    $this->views->add('text-content/post', [
         'title'  => $title,
         'action' => $action,
         'form'   => $form->getHTML(array('novalidate' => true))
-      ]);
+    ]);
   }
   
   /**
    * Edit content in database
    *
-   * @Param     Integer   $id   Index for content to edit
-   * @Return    Void
+   * @param     int   $id   Index for content to edit
+   * @return    void
    */
   public function editAction($id = null){
     $action = "Edit";
     $title  = "{$action} content";
-    $url    = $this->url->create($this->urlPrefix . 'content/');
+    $url    = $this->url->create("{$this->urlPrefix}content/");
     
     if(is_null($id) || !is_numeric($id))
       $this->response->redirect($url);
@@ -251,35 +252,31 @@ class ContentController implements \Anax\DI\IInjectionAware
     
     $this->theme->setTitle($title);
     
-    $this->views->add('text-content/post', 
-      [
+    $this->views->add('text-content/post', [
         'title'  => $title,
         'action' => $action,
         'form'   => $form->getHTML(array('novalidate' => true))
-      ]
-    );
+    ]);
   }
 	
 	/**
 	 * Remove content
 	 *
-   * @Param   Integer  $id      Index to content to remove
-	 * @Return  String   $error  	Database-error msg
+   * @param   int     $id       Index to content to remove
+	 * @return  string  $error    Database-error msg
 	 */
 	public function removeAction($id = null){
 		$action = "Delete";
     $title = "Delete content";
-    $url = $this->url->create($this->urlPrefix . "content/");
+    $url = $this->url->create("{$this->urlPrefix}content/");
     
-    if(is_null($id) || !is_numeric($id)){
+    if(is_null($id) || !is_numeric($id))
 			$this->response->redirect($url);
-		}
     
     $content = $this->content->find($id);
     
-    if(is_null($content->id)){
+    if(is_null($content->id))
       $this->response->redirect($url);
-    }
     
     $form = $this->confirmForm($url);
     $status = $form->Check();
@@ -298,7 +295,7 @@ class ContentController implements \Anax\DI\IInjectionAware
       'title'  => $title,
       'toDo'    => strtolower($action),
       'toWhat'  => strtolower($this->valid->getTypeTitle($content->type)),
-      'which'   => htmlentities($content->title),
+      'which'   => htmlspecialchars($content->title, ENT_QUOTES),
       'form'    => $form->getHTML(['novalidate' => true]),
     ], 'main');
 	}
@@ -306,9 +303,9 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare form to add or edit content
    *
-   * @param   string    $type       Selected content-type
-   * @param   boolean   $published  If content should be published already
-   * @return  object    $form       CForm object
+   * @param   string                $type       Selected content-type
+   * @param   boolean               $published  If content should be published already
+   * @return  \Mos\HTMLForm\CForm   $form       CForm object
    */
   private function listForm($type = null, $published = false){
     
@@ -334,7 +331,7 @@ class ContentController implements \Anax\DI\IInjectionAware
             $published = ($this->request->getPost('published')) ? 1 : 0;
             $type      = $form->Value('type');
             
-            $this->response->redirect($this->url->create($this->urlPrefix . "content/list/{$type}/{$published}"));
+            $this->response->redirect($this->url->create("{$this->urlPrefix}content/list/{$type}/{$published}"));
           }
         ]
     ]);
@@ -345,8 +342,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare form to add or edit content
    *
-   * @param   object    $values     Content values to add form elements
-   * @return  object    $form       CForm object
+   * @param   object                $values     Content values to add form elements
+   * @return  \Mos\HTMLForm\CForm   $form       CForm object
    */
   private function contentForm($values = null){
     if(isset($values) && is_object($values)){
@@ -356,7 +353,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     
     $slug = (isset($slug)) ? $slug : NULL;
     
-    $type_options      = $this->valid->getTypes();
+    $type_options = $this->valid->getTypes();
     
     $form = new \Mos\HTMLForm\CForm([], [
         'id'      => [
@@ -477,8 +474,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare confirmation form
    *
-   * @param   string   $returnUrl       Return url
-   * @return  object   $form            Form-object
+   * @param   string                $returnUrl       Return url
+   * @return  \Mos\HTMLForm\CForm   $form            Form-object
    */
   public function confirmForm($returnUrl = null){
     $returnUrl = (isset($returnUrl)) ? $returnUrl : $this->request->getBaseUrl();
@@ -508,9 +505,9 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Save content to database
    *
-   * @Param   Object    $form     Form object
-   * @Param   String    $oldSlug  Old slug for content to compare
-   * @Return  Boolean   false     If saving fail, return false
+   * @param   \Mos\HTMLForm\CForm   $form       Form object
+   * @param   string                $oldSlug    Old slug for content to compare
+   * @return  boolean               false/true  If saving fail, return false
    */
   private function saveContent($form, $oldSlug = null){
     // Prepare content for saving
@@ -526,14 +523,15 @@ class ContentController implements \Anax\DI\IInjectionAware
     else if($content['id'] != 0)
       $this->saveTags($form->Value('tags'), $this->content->id);
     
-    $this->response->redirect($this->url->create($this->urlPrefix . "content/"));
+    $this->response->redirect($this->url->create("{$this->urlPrefix}content/"));
+    return true;
   }
 
   /**
    * Save tags for content to database
    *
-   * @Param   String   $tags     Tags for content
-   * @Param   Int      $id       Content index
+   * @param   string   $tags     Tags for content
+   * @param   int      $id       Content index
    */
   private function saveTags($tags, $id){
     $this->db->delete(
@@ -563,8 +561,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare contents for show in list view
    *
-   * @Param   Object  $contents   Object with content objects
-   * @Return  Array   $results    Array with prepare content objects
+   * @param   object  $contents   Object with content objects
+   * @return  array   $results    Array with prepare content objects
    */
   public function prepareListContent($contents){
     $results = array();
@@ -579,8 +577,8 @@ class ContentController implements \Anax\DI\IInjectionAware
       
       $results[$key]->typeTxt      = $this->valid->getTypeTitle($content->type);
       $results[$key]->title        = htmlspecialchars($content->title, ENT_QUOTES);
-      $results[$key]->editUrl      = $this->url->create($this->urlPrefix . "content/edit/{$content->id}");
-      $results[$key]->removeUrl    = $this->url->create($this->urlPrefix . "content/remove/{$content->id}");
+      $results[$key]->editUrl      = $this->url->create("{$this->urlPrefix}content/edit/{$content->id}");
+      $results[$key]->removeUrl    = $this->url->create("{$this->urlPrefix}content/remove/{$content->id}");
       $results[$key]->showUrl      = $this->valid->getUrlToContent($content);
       $results[$key]->available    = ((!$available) ? "not-" : null) . "published";
       $results[$key]->publishedTxt  = ($available) ? $contents[$key]->published : "Not published yet";
@@ -588,12 +586,13 @@ class ContentController implements \Anax\DI\IInjectionAware
     
     return $results;
   }
+  
   /**
    * Prepare save of content to database
    *
-   * @Param   Object    $form     Form object
-   * @Param   String    $oldSlug  Old slug for content to compare
-   * @Return  Array     $content  Prepare content array
+   * @param   object    $form     Form object
+   * @param   string    $oldSlug  Old slug for content to compare
+   * @return  array     $content  Prepare content array
    */  
   public function prepareSaveContent($form, $oldSlug = null){
     $now = date('Y-m-d H:i:s');
@@ -604,7 +603,7 @@ class ContentController implements \Anax\DI\IInjectionAware
     $content = array(
       'title'     => $form->Value('title'),
       'slug'      => $newSlug,
-      'url'       => $this->valid->slugify($form->Value('url')),
+      'url'       => $form->Value('url'),
       'ingress'   => $form->Value('ingress'),
       'text'      => $form->Value('text'),
       'type'      => $form->Value('type'),
@@ -629,10 +628,10 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Prepare new slug for content by title
    *
-   * @Param   String    $title      Content title to make slug by
-   * @Param   String    $type       Content type
-   * @Param   String    $oldSlug    Old slug for content to compare
-   * @Return  String    $newSlug    New unique slug for content
+   * @param   string    $title      Content title to make slug by
+   * @param   string    $type       Content type
+   * @param   string    $oldSlug    Old slug for content to compare
+   * @return  string    $newSlug    New unique slug for content
    */
   public function prepareNewSlug($title, $type, $oldSlug = null){
     $newSlug = $this->valid->slugify($title);
@@ -646,8 +645,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Validate minimum length
    *
-   * @Param   String    $text       Text to validate
-   * @Return  Boolean   True/False  Validate status
+   * @param   string    $text       Text to validate
+   * @return  boolean   True/False  Validate status
    */
   public function minimumLength($text = null){
     return $this->valid->minimumLength($text);
@@ -656,8 +655,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Validate slug
    *
-   * @Param   String    $slug       Slug to validate
-   * @Return  Boolean   True/False  Validate status
+   * @param   string    $slug       Slug to validate
+   * @return  boolean   True/False  Validate status
    */
   public function validateSlug($slug = null){
     return $this->valid->validateSlug($slug);
@@ -666,8 +665,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Validate type
    *
-   * @Param   String    $type   Type to validate
-   * @Return  Boolean   True/False  Validate status
+   * @param   string    $type   Type to validate
+   * @return  boolean   True/False  Validate status
    */
   public function checkType($type = null){
     return $this->valid->checkType($type);
@@ -676,8 +675,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Validate filter
    *
-   * @Param   String    $filter   Filter to validate
-   * @Return  Boolean   True/False  Validate status
+   * @param   string    $filter   Filter to validate
+   * @return  boolean   True/False  Validate status
    */
   public function checkFilter($filter = null){
     return $this->valid->checkFilter($filter);
@@ -686,8 +685,8 @@ class ContentController implements \Anax\DI\IInjectionAware
   /**
    * Validate date time
    *
-   * @Param   String    $datetime   Date time to validate
-   * @Return  Boolean   True/False  Validate status
+   * @param   string    $datetime   Date time to validate
+   * @return  boolean   True/False  Validate status
    */
   public function checkDatetime($datetime = null){
     return $this->valid->checkDatetime($datetime);
